@@ -1,0 +1,83 @@
+{% extends 'layouts/base.html' %}
+{% load humanize %} {% block content %}
+<div class="container mt-4">
+    <div class="card bg-light p-4 mb-5 shadow-sm border-0">
+        <h2 class="text-center text-danger fw-bold mb-4">Find Your Property</h2>
+        <form action="{% url 'search' %}">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="sr-only">Keywords</label>
+                    <input type="text" name="keywords" class="form-control" placeholder="Keywords (Pool, Garage, etc)" value="{{ values.keywords }}">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="sr-only">City</label>
+                    <input type="text" name="city" class="form-control" placeholder="City" value="{{ values.city }}">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="sr-only">Realtor Name</label>
+                    <input type="text" name="realtor" class="form-control" placeholder="Agent Name (e.g. Smith)" value="{{ values.realtor }}">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="sr-only">Bedrooms</label>
+                    <input type="number" name="bedrooms" class="form-control" placeholder="Min Bedrooms" value="{{ values.bedrooms }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="sr-only">Price</label>
+                    <input type="number" name="price" class="form-control" placeholder="Max Price" value="{{ values.price }}">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100 btn-lg mt-2">Search Listings</button>
+        </form>
+    </div>
+
+    <div class="row">
+        {% if listings %}
+            {% for listing in listings %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <a href="{% url 'listing' listing.id %}">
+                            <img src="{{ listing.photo_main.url }}" class="card-img-top listing-img" alt="{{ listing.title }}" style="height: 200px; object-fit: cover;">
+                        </a>
+                        
+                        <div class="card-body">
+                            <a href="{% url 'listing' listing.id %}" class="text-decoration-none text-dark">
+                                <h5 class="card-title fw-bold">{{ listing.title }}</h5>
+                            </a>
+                            
+                            <h6 class="text-danger fw-bold">${{ listing.price|intcomma }}</h6>
+                            <p class="text-muted small mb-2">
+                                <i class="fas fa-map-marker-alt text-secondary me-1"></i> {{ listing.city }}
+                            </p>
+                            
+                            <hr>
+                            
+                            <div class="row text-secondary text-center">
+                                <div class="col-6">
+                                    <i class="fas fa-bed"></i> {{ listing.bedrooms }} Beds
+                                </div>
+                                <div class="col-6">
+                                    <i class="fas fa-bath"></i> {{ listing.bathrooms }} Baths
+                                </div>
+                            </div>
+                            
+                            <a href="{% url 'listing' listing.id %}" class="btn btn-outline-danger w-100 mt-3">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <div class="alert alert-warning text-center">
+                    <p class="mb-0">No properties found matching your search criteria. Try removing some filters.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

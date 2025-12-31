@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<section id="dashboard" class="py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="display-4 fw-bold text-danger">Realtor Dashboard</h2>
+                <p class="lead">Welcome back, <strong>{{ user.first_name }}</strong>. Manage your Kalgoorlie portfolio.</p>
+            </div>
+            <a href="{% url 'create_listing' %}" class="btn btn-danger btn-lg">
+                <i class="fas fa-plus-circle me-2"></i> Create New Listing
+            </a>
+        </div>
+        
+        {% if listings %}
+        <div class="card shadow-sm border-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="bg-dark text-white">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Property</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Price</th>
+                  <th scope="col" class="text-center">Status & Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for listing in listings %}
+                <tr>
+                  <td>{{ listing.id }}</td>
+                  <td>
+                      <strong>{{ listing.title }}</strong><br>
+                      <small class="text-muted">{{ listing.address }}</small>
+                  </td>
+                  <td><span class="badge bg-secondary">{{ listing.get_category_display }}</span></td>
+                  <td>${{ listing.price|intcomma }}</td>
+                  
+                  <td class="text-center">
+    
+                    {% if listing.is_published %}
+                        <span class="badge bg-success me-1"><i class="fas fa-check-circle"></i> Live</span>
+                        <a href="{% url 'listing' listing.id %}" class="btn btn-outline-dark btn-sm" target="_blank">View</a>
+
+                    {% elif listing.id in paid_listing_ids %}
+                        <span class="badge bg-info text-dark me-1">
+                            <i class="fas fa-hourglass-half"></i> Pending Review
+                        </span>
+                        <button class="btn btn-secondary btn-sm" disabled>Paid</button>
+
+                    {% else %}
+                        <a href="{% url 'checkout' listing.id %}" class="btn btn-warning btn-sm me-1">
+                            <i class="fas fa-dollar-sign"></i> Pay to Publish
+                        </a>
+                    {% endif %}
+
+                    <a href="{% url 'update_listing' listing.id %}" class="btn btn-dark btn-sm">Edit</a>
+                    <a href="{% url 'delete_listing' listing.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+                  
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% else %}
+        <div class="alert alert-light border shadow-sm text-center py-5">
+            <h4 class="text-muted mb-3">You haven't posted any properties yet.</h4>
+            <a href="{% url 'create_listing' %}" class="btn btn-outline-danger">
+                Start your first listing
+            </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

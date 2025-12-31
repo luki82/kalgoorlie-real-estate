@@ -1,0 +1,110 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<section id="showcase-inner" class="py-5 text-white bg-danger mb-4">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-12">
+                <h1 class="display-4 fw-bold">{{ listing.title }}</h1>
+                <p class="lead"><i class="fas fa-map-marker-alt"></i> {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="listing" class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <img src="{{ listing.photo_main.url }}" alt="{{ listing.title }}" class="img-fluid mb-4 rounded shadow-sm w-100" style="max-height: 500px; object-fit: cover;">
+                
+                <div class="row mb-5 fields">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush border rounded">
+                            <li class="list-group-item text-secondary">
+                                <i class="fas fa-money-bill-alt text-danger me-2"></i> Price:
+                                <span class="float-end text-dark fw-bold">${{ listing.price|intcomma }}</span>
+                            </li>
+                            <li class="list-group-item text-secondary">
+                                <i class="fas fa-bed text-danger me-2"></i> Bedrooms:
+                                <span class="float-end text-dark fw-bold">{{ listing.bedrooms }}</span>
+                            </li>
+                            <li class="list-group-item text-secondary">
+                                <i class="fas fa-bath text-danger me-2"></i> Bathrooms:
+                                <span class="float-end text-dark fw-bold">{{ listing.bathrooms }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush border rounded">
+                            <li class="list-group-item text-secondary">
+                                <i class="fas fa-calendar text-danger me-2"></i> Listed:
+                                <span class="float-end text-dark fw-bold">{{ listing.list_date|date:"d M Y" }}</span>
+                            </li>
+                            <li class="list-group-item text-secondary">
+                                <i class="fas fa-tag text-danger me-2"></i> Category:
+                                <span class="float-end text-danger fw-bold">{{ listing.get_category_display }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h3 class="border-bottom pb-2 mb-3 text-dark">Description</h3>
+                    <div class="p-3 bg-white border rounded">
+                        <p style="white-space: pre-wrap;">{{ listing.description }}</p>
+                    </div>
+                </div>
+                
+                {% if listing.category == 'CRISIS' %}
+                <div class="mb-5">
+                    <div class="alert alert-danger border-2 shadow-sm">
+                        <h4 class="alert-heading fw-bold"><i class="fas fa-exclamation-circle"></i> Eligibility Criteria</h4>
+                        <hr>
+                        <p class="mb-0">{{ listing.eligibility_criteria }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 mb-4 sticky-top" style="top: 20px;">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h5 class="mb-0 small fw-bold text-uppercase">Contact Representative</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="fas fa-user-tie fa-lg"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">{{ listing.realtor.get_full_name|default:listing.realtor.username }}</h6>
+                                <small class="text-muted">II Options Team</small>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="tel:{{ listing.realtor_phone }}" class="btn btn-danger text-start">
+                                <i class="fas fa-phone-alt me-2"></i> {{ listing.realtor_phone }}
+                            </a>
+                            <a href="mailto:{{ listing.realtor.email }}" class="btn btn-outline-dark text-start">
+                                <i class="fas fa-envelope me-2"></i> {{ listing.realtor.email }}
+                            </a>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <p class="small text-muted mb-3 text-center">Have a specific question? Send us a message below.</p>
+                        
+                        <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                            <i class="fas fa-paper-plane me-2"></i> Make Inquiry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

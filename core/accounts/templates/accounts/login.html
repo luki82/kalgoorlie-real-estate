@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        
+        <div class="card shadow-lg border-0 rounded-lg">
+          <div class="card-header bg-danger text-white text-center py-3">
+            <h3 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>Login</h3>
+          </div>
+          
+          <div class="card-body p-5">
+            {% if form.errors %}
+              <div class="alert alert-danger">
+                <p class="mb-0"><i class="fas fa-exclamation-circle me-2"></i>Your username and password didn't match. Please try again.</p>
+              </div>
+            {% endif %}
+
+            <form action="{% url 'login' %}" method="POST">
+              {% csrf_token %}
+              
+              <div class="mb-3">
+                <label for="username" class="form-label fw-bold">Username</label>
+                <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter Username" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label fw-bold">Password</label>
+                <input type="password" name="password" class="form-control form-control-lg" placeholder="Enter Password" required>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                  </div>
+                <a href="{% url 'reset_password' %}" class="text-danger small fw-bold">Forgot Password?</a>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-danger btn-lg">
+                  <i class="fas fa-arrow-right me-2"></i> Login
+                </button>
+              </div>
+            </form>
+          </div>
+          
+          <div class="card-footer text-center py-3 bg-white border-0">
+            <div class="small">
+              <a href="{% url 'register' %}" class="text-muted">Need an account? <span class="text-danger fw-bold">Sign up!</span></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
