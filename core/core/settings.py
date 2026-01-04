@@ -20,14 +20,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-unsafe-key-for-dev')
 
 
+# Stripe Configuration
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # This logic means: If the environment says "False", it's False. Otherwise default to True.
-DEBUG = os.environ.get('DEBUG') == 'True'
+#DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = True
 
 #ALLOWED_HOSTS = [] # Add your domain (e.g., 'iioptions.com.au') here when live.
-ALLOWED_HOSTS = ['*'] # We will tighten this later for Render
+ALLOWED_HOSTS = [
+    'auestate.com.au', 
+    'www.auestate.com.au', 
+    'your-render-app.onrender.com',
+    # You can keep these here safely
+    'auestate.com',
+    'www.auestate.com',
+    '127.0.0.1',
+    'localhost'
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://auestate.com.au',
+    'https://www.auestate.com.au',
+]
 
 # --- APPLICATION DEFINITION ---
 
@@ -157,11 +174,40 @@ CACHES = {
 }
 
 
-# --- EMAIL CONFIGURATION ---
-# Development Mode (Prints to Terminal)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # 3 action to be done before going live!    
 # 1 seceret key to be put in .env 
 # turn of debug
 # set up email , and payment intergration
+
+# --- EMAIL CONFIGURATION (Gmail) ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('wkop abmd llbq eagl')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# settings.py
+
+# ... existing code ...
+
+# EMAIL CONFIGURATION (Microsoft 365 / GoDaddy)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Your new professional email address
+EMAIL_HOST_USER = 'admin@auestate.com.au'  # <--- CHANGE THIS to your actual email
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# SECURITY WARNING: Never type the actual password here!
+# We will read it from the Render Environment instead.
+
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+# ... existing code ...

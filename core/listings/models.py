@@ -4,8 +4,6 @@ from django.utils import timezone # Better than datetime for Timezones
 from PIL import Image, ImageOps # Import ImageOps to handle rotation issues
 from io import BytesIO 
 from django.core.files.base import ContentFile 
-
-
 import os
 
 class Listing(models.Model):
@@ -16,6 +14,14 @@ class Listing(models.Model):
         ('CRISIS', 'Crisis Housing'),
     ]
 
+    # --- ADD THIS HERE (Constants) ---
+    TIER_CHOICES = [
+        ('TIER1', 'Tier 1: Standard (DIY)'),
+        ('TIER2', 'Tier 2: Village/Motel (Daily Mgmt)'),
+        ('TIER3', 'Tier 3: Premium (Assisted)'),
+    ]
+    # ---------------------------------
+
     # 2. CORE FIELDS
     realtor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -25,7 +31,7 @@ class Listing(models.Model):
     zipcode = models.CharField(max_length=20)
     description = models.TextField(blank=True)
 
-    # Bond Amount (Default to 0 so it doesn't break)
+    # Bond Amount
     bond = models.IntegerField(default=0, blank=True)
     
     # Standard Expectations
@@ -48,20 +54,17 @@ class Listing(models.Model):
     # 3. CONTACT & STATUS
     realtor_phone = models.CharField(max_length=20, blank=True, default="04XX XXX XXX")
     is_published = models.BooleanField(default=True)
-    list_date = models.DateTimeField(default=timezone.now, blank=True) # Updated to timezone.now
-    
-    # 4. PHOTOS
-    photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/')
-    photo_1 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
-    photo_2 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
-    photo_3 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
-    photo_4 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
-    
-    # 5. SPECIAL FIELDS
-    eligibility_criteria = models.TextField(blank=True, help_text="Only for Crisis Housing")
+    list_date = models.DateTimeField(default=timezone.now, blank=True)
 
-    def __str__(self):
-        return self.title
+    # --- ADD THIS NEW SECTION HERE ---
+    # 3.5. MEMBERSHIP & TIER DETAILS
+    tier = models.CharField(max_length=10, choices=TIER_CHOICES, default='TIER1')
+    is_paid = models.BooleanField(default=False)
+
+    # Fields for Tier 2 (Caravan Parks / Motels)
+    total_units = models.IntegerField(default=1, help_text="Total rooms/cabins (Tier 2 only)")
+    vacant_units = models.IntegerField(default=0, help_text="How many are free right now? (Tier 2 only)")
+    # ---------------------------------
 
     # 6. FINAL ROBUST IMAGE OPTIMIZATION
     def save(self, *args, **kwargs):
@@ -111,3 +114,27 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+class InvestorLead(models.Model):
+    INVESTOR_TYPES = [
+        ('ANGEL', 'Angel Investor / Private Individual'),
+        ('VC', 'Venture Capital Firm'),
+        ('INST', 'Institutional Investor'),
+        ('PARTNER', 'Strategic Partner / Media'),
+    ]
+
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20, blank=True)
+    organization = models.CharField(max_length=100, blank=True, help_text="Company or Family Office name")
+    investor_type = models.CharField(max_length=10, choices=INVESTOR_TYPES)
+    linkedin_profile = models.URLField(blank=True, help_text="Optional: Helps us verify your profile")
+    
+    # The "Vetting" questions
+    is_accredited = models.BooleanField(default=False, verbose_name="I confirm I am a sophisticated/accredited investor")
+    message = models.TextField(blank=True, help_text="Tell us briefly about your investment focus.")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.organization}"

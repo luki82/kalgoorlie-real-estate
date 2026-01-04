@@ -1,5 +1,5 @@
 from django import forms
-from .models import Listing
+from .models import Listing, InvestorLead
 
 class ListingForm(forms.ModelForm):
     class Meta:
@@ -25,4 +25,21 @@ class ListingForm(forms.ModelForm):
             'realtor_phone': forms.TextInput(attrs={'class': 'form-control'}),
             'is_published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'is_pet_friendly': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+
+
+class InvestorRequestForm(forms.ModelForm):
+    class Meta:
+        model = InvestorLead
+        fields = ['full_name', 'email', 'phone', 'organization', 'investor_type', 'linkedin_profile', 'message', 'is_accredited']
+        widgets = {
+            'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Jane Doe'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'jane@capitalfirm.com'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+61 ...'}),
+            'organization': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Acme Capital'}),
+            'investor_type': forms.Select(attrs={'class': 'form-select'}),
+            'linkedin_profile': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://linkedin.com/in/...'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'We focus on early-stage regional tech...'}),
+            'is_accredited': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }

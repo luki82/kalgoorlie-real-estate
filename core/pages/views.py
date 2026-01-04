@@ -58,3 +58,9 @@ def search(request):
         'values': request.GET 
     }
     return render(request, 'pages/search.html', context)
+
+def about(request):
+    return render(request, 'pages/about.html')
+
+def services(request):
+    return render(request, 'pages/services.html')
