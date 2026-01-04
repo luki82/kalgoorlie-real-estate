@@ -27,7 +27,10 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # This logic means: If the environment says "False", it's False. Otherwise default to True.
 #DEBUG = os.environ.get('DEBUG') == 'True'
-DEBUG = True
+if os.environ.get('RENDER'):
+    DEBUG = False
+else:
+    DEBUG = True
 
 #ALLOWED_HOSTS = [] # Add your domain (e.g., 'iioptions.com.au') here when live.
 ALLOWED_HOSTS = [

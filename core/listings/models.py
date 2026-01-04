@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone # Better than datetime for Timezones
-from PIL import Image, ImageOps # Import ImageOps to handle rotation issues
+from django.utils import timezone 
+from PIL import Image, ImageOps 
 from io import BytesIO 
 from django.core.files.base import ContentFile 
 import os
@@ -14,13 +14,11 @@ class Listing(models.Model):
         ('CRISIS', 'Crisis Housing'),
     ]
 
-    # --- ADD THIS HERE (Constants) ---
     TIER_CHOICES = [
         ('TIER1', 'Tier 1: Standard (DIY)'),
         ('TIER2', 'Tier 2: Village/Motel (Daily Mgmt)'),
         ('TIER3', 'Tier 3: Premium (Assisted)'),
     ]
-    # ---------------------------------
 
     # 2. CORE FIELDS
     realtor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -30,6 +28,13 @@ class Listing(models.Model):
     state = models.CharField(max_length=100)
     zipcode = models.CharField(max_length=20)
     description = models.TextField(blank=True)
+
+    # Photos
+    photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/')          
+    photo_1 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True) 
+    photo_2 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True) 
+    photo_3 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True) 
+    photo_4 = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True) 
 
     # Bond Amount
     bond = models.IntegerField(default=0, blank=True)
@@ -41,6 +46,10 @@ class Listing(models.Model):
         help_text="General expectations for tenants/buyers"
     )
     
+    # --- THIS WAS MISSING BEFORE ---
+    eligibility_criteria = models.TextField(blank=True, help_text="Who is eligible to apply?")
+    # -------------------------------
+
     # Pet Friendly
     is_pet_friendly = models.BooleanField(default=False, verbose_name="Is Pet Friendly?")
     
@@ -56,7 +65,6 @@ class Listing(models.Model):
     is_published = models.BooleanField(default=True)
     list_date = models.DateTimeField(default=timezone.now, blank=True)
 
-    # --- ADD THIS NEW SECTION HERE ---
     # 3.5. MEMBERSHIP & TIER DETAILS
     tier = models.CharField(max_length=10, choices=TIER_CHOICES, default='TIER1')
     is_paid = models.BooleanField(default=False)
@@ -64,12 +72,10 @@ class Listing(models.Model):
     # Fields for Tier 2 (Caravan Parks / Motels)
     total_units = models.IntegerField(default=1, help_text="Total rooms/cabins (Tier 2 only)")
     vacant_units = models.IntegerField(default=0, help_text="How many are free right now? (Tier 2 only)")
-    # ---------------------------------
 
     # 6. FINAL ROBUST IMAGE OPTIMIZATION
     def save(self, *args, **kwargs):
         # 1. Process the image BEFORE saving the model instance
-        # Loop through all photo fields
         photo_fields = ['photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4']
         
         for field_name in photo_fields:
@@ -89,7 +95,6 @@ class Listing(models.Model):
                         
                         # Save resized image to memory buffer (RAM)
                         buffer = BytesIO()
-                        # Convert to RGB to avoid issues with PNG/Alpha channels
                         if img.mode != 'RGB':
                             img = img.convert('RGB')
                         
@@ -102,6 +107,10 @@ class Listing(models.Model):
 
         # 2. Now save the model with the optimized images
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
 class Contact(models.Model):
     listing = models.CharField(max_length=200)
     listing_id = models.IntegerField()
