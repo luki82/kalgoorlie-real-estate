@@ -8,7 +8,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h3 class="card-title text-primary">Marketing Floor Plans</h3>
+                    <h3 class="card-title text-danger">Marketing Floor Plans</h3>
                     <p class="card-text">We convert rough sketches or old blueprints into clean, professional 2D marketing floor plans ready for listings.</p>
                     <ul>
                         <li>On-site Laser Measurements</li>
@@ -22,7 +22,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h3 class="card-title text-primary">Agents Support</h3>
+                    <h3 class="card-title text-danger">Agents Support</h3>
                     <p class="card-text">Acting as your 'boots on the ground.' We conduct site visits for busy agents and interstate investors.</p>
                     <ul>
                         <li>Site Condition Reports</li>
@@ -36,7 +36,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h3 class="card-title text-primary">Property Photography</h3>
+                    <h3 class="card-title text-danger">Property Photography</h3>
                     <p class="card-text">High-quality interior and exterior photos to make your listing stand out on major real estate portals.</p>
                     <ul>
                         <li>Bright & Clear Editing</li>
@@ -65,32 +65,34 @@
                     <h1 class="card-title pricing-card-title">$99<small class="text-muted">/ one-time</small></h1>
                     <p class="text-muted">For Homeowners & Private Sellers</p>
                     <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 250px;">
-                        <li><i class="bi bi-check text-success"></i> 1 Property Listing</li>
-                        <li><i class="bi bi-check text-success"></i>Online until sold (or 60 days)</li>
-                        <li><i class="bi bi-check text-success"></i> You upload text & photos</li>
-                        <li><i class="bi bi-check text-success"></i> Standard inquiry form</li>
+                        <li><i class="bi bi-check text-danger"></i> 1 Property Listing</li>
+                        <li><i class="bi bi-check text-danger"></i> Online until sold</li>
+                        <li><i class="bi bi-check text-danger"></i> You upload text & photos</li>
+                        <li><i class="bi bi-check text-danger"></i> Standard inquiry form</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary w-100">Get Started</button>
+                    
+                    <a href="{% url 'create_listing' %}" class="btn btn-lg btn-block btn-outline-danger w-100">Get Started</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow border-primary">
-                <div class="card-header bg-primary text-white text-center py-4">
+            <div class="card h-100 shadow border-danger">
+                <div class="card-header bg-danger text-white text-center py-4">
                     <h4 class="my-0 font-weight-normal">Manager Subscription</h4>
-                    <span class="badge bg-light text-dark mb-2">High Value</span>
+                    <span class="badge bg-white text-danger mb-2">High Value</span>
                 </div>
                 <div class="card-body text-center">
                     <h1 class="card-title pricing-card-title">$199<small class="text-muted">/ month</small></h1>
-                    <p class="text-muted">For Parks, Motels/hotels & Camps</p>
+                    <p class="text-muted">For Parks, Motels & Camps</p>
                     <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 250px;">
-                        <li><i class="bi bi-check-circle-fill text-primary"></i> <strong>Complex Dashboard</strong></li>
-                        <li><i class="bi bi-check-circle-fill text-primary"></i> Manage multiple sub-units</li>
-                        <li><i class="bi bi-check-circle-fill text-primary"></i> Instant Vacancy Toggles</li>
-                        <li><i class="bi bi-check-circle-fill text-primary"></i> Priority Search Placement</li>
+                        <li><i class="bi bi-check-circle-fill text-danger"></i> <strong>Complex Dashboard</strong></li>
+                        <li><i class="bi bi-check-circle-fill text-danger"></i> Manage sub-units</li>
+                        <li><i class="bi bi-check-circle-fill text-danger"></i> Vacancy Toggles</li>
+                        <li><i class="bi bi-check-circle-fill text-danger"></i> Priority Placement</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary w-100">Subscribe Now</button>
+                    
+                    <a href="{% url 'investor-request' %}" class="btn btn-lg btn-block btn-danger w-100">Subscribe Now</a>
                 </div>
             </div>
         </div>
@@ -105,13 +107,14 @@
                     <h1 class="card-title pricing-card-title">$550<small class="text-muted">/ start</small></h1>
                     <p class="text-muted">For Investors & Busy Agents</p>
                     <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 250px;">
-                        <li><i class="bi bi-check text-success"></i> <strong>Includes Listing Fee</strong></li>
-                        <li><i class="bi bi-check text-success"></i> On-site Visit (Kalgoorlie)</li>
-                        <li><i class="bi bi-check text-success"></i> Pro Photography (10-15)</li>
-                        <li><i class="bi bi-check text-success"></i> 2D Floor Plan Drafted</li>
-                        <li><i class="bi bi-check text-success"></i> We Write & Upload for you</li>
+                        <li><i class="bi bi-check text-danger"></i> <strong>Includes Listing Fee</strong></li>
+                        <li><i class="bi bi-check text-danger"></i> On-site Visit (Kalgoorlie)</li>
+                        <li><i class="bi bi-check text-danger"></i> Pro Photography</li>
+                        <li><i class="bi bi-check text-danger"></i> 2D Floor Plan Drafted</li>
+                        <li><i class="bi bi-check text-danger"></i> We Write & Upload</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-dark w-100">Contact Us</button>
+                    
+                    <a href="{% url 'investor-request' %}" class="btn btn-lg btn-block btn-outline-dark w-100">Contact Us</a>
                 </div>
             </div>
         </div>

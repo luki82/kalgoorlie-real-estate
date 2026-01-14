@@ -3,8 +3,9 @@
 {% load humanize %}
 
 {% block content %}
-<section id="showcase-inner" class="py-5 text-white bg-danger mb-4">
-    <div class="container">
+<section id="showcase-inner" class="py-5 text-white" style="background: url('{{ listing.photo_main.url }}') no-repeat center center fixed; background-size: cover; position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);"></div>
+    <div class="container position-relative">
         <div class="row text-center">
             <div class="col-md-12">
                 <h1 class="display-4 fw-bold">{{ listing.title }}</h1>
@@ -14,97 +15,297 @@
     </div>
 </section>
 
+<section id="bc" class="mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'listings' %}">Listings</a></li>
+                <li class="breadcrumb-item active">{{ listing.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
 <section id="listing" class="py-4">
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
-                <img src="{{ listing.photo_main.url }}" alt="{{ listing.title }}" class="img-fluid mb-4 rounded shadow-sm w-100" style="max-height: 500px; object-fit: cover;">
+
+            <div class="col-md-8">
                 
-                <div class="row mb-5 fields">
-                    <div class="col-md-6">
-                        <ul class="list-group list-group-flush border rounded">
-                            <li class="list-group-item text-secondary">
-                                <i class="fas fa-money-bill-alt text-danger me-2"></i> Price:
-                                <span class="float-end text-dark fw-bold">${{ listing.price|intcomma }}</span>
-                            </li>
-                            <li class="list-group-item text-secondary">
-                                <i class="fas fa-bed text-danger me-2"></i> Bedrooms:
-                                <span class="float-end text-dark fw-bold">{{ listing.bedrooms }}</span>
-                            </li>
-                            <li class="list-group-item text-secondary">
-                                <i class="fas fa-bath text-danger me-2"></i> Bathrooms:
-                                <span class="float-end text-dark fw-bold">{{ listing.bathrooms }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list-group list-group-flush border rounded">
-                            <li class="list-group-item text-secondary">
-                                <i class="fas fa-calendar text-danger me-2"></i> Listed:
-                                <span class="float-end text-dark fw-bold">{{ listing.list_date|date:"d M Y" }}</span>
-                            </li>
-                            <li class="list-group-item text-secondary">
-                                <i class="fas fa-tag text-danger me-2"></i> Category:
-                                <span class="float-end text-danger fw-bold">{{ listing.get_category_display }}</span>
-                            </li>
-                        </ul>
+                <img src="{{ listing.photo_main.url }}" alt="{{ listing.title }}" class="img-fluid mb-4 rounded shadow w-100" style="max-height: 500px; object-fit: cover;">
+                
+                <div class="row mb-4">
+                    {% if listing.photo_1 %}
+                        <div class="col-md-3 col-6 mb-2"><img src="{{ listing.photo_1.url }}" class="img-fluid rounded border" alt=""></div>
+                    {% endif %}
+                    {% if listing.photo_2 %}
+                        <div class="col-md-3 col-6 mb-2"><img src="{{ listing.photo_2.url }}" class="img-fluid rounded border" alt=""></div>
+                    {% endif %}
+                    {% if listing.photo_3 %}
+                        <div class="col-md-3 col-6 mb-2"><img src="{{ listing.photo_3.url }}" class="img-fluid rounded border" alt=""></div>
+                    {% endif %}
+                    {% if listing.photo_4 %}
+                        <div class="col-md-3 col-6 mb-2"><img src="{{ listing.photo_4.url }}" class="img-fluid rounded border" alt=""></div>
+                    {% endif %}
+                </div>
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        
+                        {% if listing.property_type == 'VILLAGE' or listing.property_type == 'HOTEL' %}
+                            <div class="row text-center align-items-center">
+                                <div class="col-md-12">
+                                    <h5 class="text-muted text-uppercase mb-3">Current Availability</h5>
+                                    <div class="alert alert-success d-inline-block px-5">
+                                        <h2 class="display-4 fw-bold mb-0">{{ listing.vacant_units }}</h2>
+                                        <p class="mb-0">Vacant Units (out of {{ listing.total_units }})</p>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        {% elif listing.property_type == 'LAND' %}
+                             <div class="row text-center text-primary">
+                                <div class="col-6 border-end">
+                                    <i class="fas fa-ruler-combined fa-2x mb-2"></i>
+                                    <h5>{{ listing.lot_size }} m²</h5>
+                                    <small class="text-muted">Land Size</small>
+                                </div>
+                                <div class="col-6">
+                                    <i class="fas fa-tag fa-2x mb-2"></i>
+                                    <h5>${{ listing.price | intcomma }}</h5>
+                                    <small class="text-muted">Asking Price</small>
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <div class="row text-center text-primary">
+                                <div class="col-3">
+                                    <i class="fas fa-bed fa-2x mb-2"></i>
+                                    <h5 class="fw-bold text-dark">{{ listing.bedrooms }}</h5>
+                                    <small class="text-muted">Beds</small>
+                                </div>
+                                <div class="col-3">
+                                    <i class="fas fa-bath fa-2x mb-2"></i>
+                                    <h5 class="fw-bold text-dark">{{ listing.bathrooms }}</h5>
+                                    <small class="text-muted">Baths</small>
+                                </div>
+                                <div class="col-3">
+                                    <i class="fas fa-car fa-2x mb-2"></i>
+                                    <h5 class="fw-bold text-dark">{{ listing.garage }}</h5>
+                                    <small class="text-muted">Cars</small>
+                                </div>
+                                <div class="col-3">
+                                    <i class="fas fa-couch fa-2x mb-2"></i>
+                                    <h5 class="fw-bold text-dark" style="font-size: 0.9rem;">{{ listing.furnished_status }}</h5>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="mb-5">
-                    <h3 class="border-bottom pb-2 mb-3 text-dark">Description</h3>
-                    <div class="p-3 bg-white border rounded">
-                        <p style="white-space: pre-wrap;">{{ listing.description }}</p>
+                    <h4 class="text-dark border-bottom pb-2 mb-3">Property Description</h4>
+                    <div class="text-muted" style="white-space: pre-wrap; line-height: 1.8;">{{ listing.description }}</div>
+                    
+                    {% if listing.proximity_to_center %}
+                    <div class="mt-4 p-3 bg-light rounded border-start border-4 border-info">
+                        <i class="fas fa-map-marked-alt text-info me-2"></i> 
+                        <strong>Location Highlight:</strong> {{ listing.proximity_to_center }}
                     </div>
+                    {% endif %}
                 </div>
-                
+
                 {% if listing.category == 'CRISIS' %}
-                <div class="mb-5">
-                    <div class="alert alert-danger border-2 shadow-sm">
-                        <h4 class="alert-heading fw-bold"><i class="fas fa-exclamation-circle"></i> Eligibility Criteria</h4>
-                        <hr>
-                        <p class="mb-0">{{ listing.eligibility_criteria }}</p>
-                    </div>
+                <div class="alert alert-danger border-2 shadow-sm mb-5">
+                    <h4 class="alert-heading fw-bold"><i class="fas fa-exclamation-circle"></i> Eligibility Required</h4>
+                    <hr>
+                    <p class="mb-0">{{ listing.eligibility_criteria }}</p>
                 </div>
                 {% endif %}
+                
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="fas fa-map"></i> Location</h5>
+                    </div>
+                    <div class="card-body p-0">
+                         <iframe width="100%" height="350" style="border:0;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q={{ listing.address }}, {{ listing.city }}&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 mb-4 sticky-top" style="top: 20px;">
-                    <div class="card-header bg-dark text-white py-3">
-                        <h5 class="mb-0 small fw-bold text-uppercase">Contact Representative</h5>
+            <div class="col-md-4">
+                <div class="card mb-3 shadow sticky-top" style="top: 20px; z-index: 1;"> 
+                    
+                    <div class="card-header bg-white text-center border-bottom-0 pt-4 pb-0">
+                        {% if listing.realtor.agency_logo %}
+                            <img src="{{ listing.realtor.agency_logo.url }}" alt="Agency Logo" style="max-height: 50px; max-width: 100%;">
+                        {% else %}
+                            <h6 class="text-muted text-uppercase fw-bold">{{ listing.realtor.agency_name|default:"Independent Agent" }}</h6>
+                        {% endif %}
                     </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                                <i class="fas fa-user-tie fa-lg"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark">{{ listing.realtor.get_full_name|default:listing.realtor.username }}</h6>
-                                <small class="text-muted">II Options Team</small>
-                            </div>
-                        </div>
 
+                    <div class="text-center mt-3">
+                        {% if listing.realtor.photo %}
+                            <img src="{{ listing.realtor.photo.url }}" class="rounded-circle shadow border border-3 border-white" style="width: 130px; height: 130px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle shadow border border-3 border-white bg-light d-inline-flex align-items-center justify-content-center" style="width: 130px; height: 130px;">
+                                <i class="fas fa-user-tie fa-3x text-secondary"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body text-center pt-2">
+                        <h4 class="card-title fw-bold mb-0">{{ listing.realtor.name }}</h4>
+                        <p class="text-muted small mb-3">Licensed Real Estate Agent</p>
+                        
                         <div class="d-grid gap-2">
-                            <a href="tel:{{ listing.realtor_phone }}" class="btn btn-danger text-start">
-                                <i class="fas fa-phone-alt me-2"></i> {{ listing.realtor_phone }}
-                            </a>
-                            <a href="mailto:{{ listing.realtor.email }}" class="btn btn-outline-dark text-start">
-                                <i class="fas fa-envelope me-2"></i> {{ listing.realtor.email }}
-                            </a>
+                            {% if listing.realtor.phone %}
+                                <a href="tel:{{ listing.realtor.phone }}" class="btn btn-outline-success fw-bold">
+                                    <i class="fas fa-phone me-2"></i> {{ listing.realtor.phone }}
+                                </a>
+                            {% endif %}
+
+                            <button class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                                <i class="fas fa-envelope me-2"></i> Email Agent
+                            </button>
+                            
+                            {% if listing.inspection_booking_url %}
+                                <a href="{{ listing.inspection_booking_url }}" target="_blank" class="btn btn-warning fw-bold mt-2">
+                                    <i class="far fa-calendar-check me-2"></i> Book Inspection
+                                </a>
+                                {% if listing.next_inspection %}
+                                    <small class="text-muted mt-1">Next: {{ listing.next_inspection|date:"D d M @ g:i a" }}</small>
+                                {% endif %}
+                            {% else %}
+                                <button class="btn btn-light text-muted border mt-2" disabled>No Inspection Set</button>
+                            {% endif %}
                         </div>
-                        
-                        <hr class="my-4">
-                        
-                        <p class="small text-muted mb-3 text-center">Have a specific question? Send us a message below.</p>
-                        
-                        <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-                            <i class="fas fa-paper-plane me-2"></i> Make Inquiry
-                        </button>
+                    </div>
+                    
+                    <div class="card-footer bg-light text-center small text-muted">
+                        <i class="fas fa-check-circle text-success me-1"></i> Verified Agent
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="inquiryModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Contact {{ listing.realtor.name }}</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <form action="{% url 'contact' %}" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="user_id" value="{{ user.id }}">
+  <input type="hidden" name="listing_id" value="{{ listing.id }}">
+  <input type="hidden" name="listing" value="{{ listing.title }}">
+
+  <p class="small text-danger">Mandatory fields *</p>
+
+  <div class="form-group">
+    <label for="first_name" class="col-form-label">First Name *</label>
+    <input type="text" name="first_name" class="form-control" 
+           {% if user.is_authenticated %} value="{{ user.first_name }}" {% endif %} required>
+  </div>
+  
+  <div class="form-group">
+    <label for="last_name" class="col-form-label">Last Name *</label>
+    <input type="text" name="last_name" class="form-control" 
+           {% if user.is_authenticated %} value="{{ user.last_name }}" {% endif %} required>
+  </div>
+
+  <div class="form-group">
+    <label for="email" class="col-form-label">Email *</label>
+    <input type="email" name="email" class="form-control" 
+           {% if user.is_authenticated %} value="{{ user.email }}" {% endif %} required>
+  </div>
+
+  <div class="form-group">
+    <label for="phone" class="col-form-label">Phone number</label>
+    <input type="text" name="phone" class="form-control">
+  </div>
+
+  <hr>
+
+  <div class="form-group">
+    <label class="font-weight-bold">About me:</label>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="about_me" value="I own my home" checked>
+      <label class="form-check-label">I own my home</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="about_me" value="I am a first home buyer">
+      <label class="form-check-label">I am a first home buyer</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="about_me" value="I am renting">
+      <label class="form-check-label">I am renting</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="about_me" value="I am an investor">
+      <label class="form-check-label">I am an investor</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="about_me" value="I have recently sold">
+      <label class="form-check-label">I have recently sold</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="about_me" value="I am monitoring the market">
+      <label class="form-check-label">I am monitoring the market</label>
+    </div>
+  </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">I am interested in:</label>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="interests" value="Date available">
+                        <label class="form-check-label">Date available</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="interests" value="Length of lease">
+                        <label class="form-check-label">Length of lease</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="interests" value="Home open times">
+                        <label class="form-check-label">Home open times</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="interests" value="Parking availability">
+                        <label class="form-check-label">Parking availability</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="interests" value="Pets allowed">
+                        <label class="form-check-label">Pets allowed</label>
+                        </div>
+                        <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="interests" value="Rental application">
+                        <label class="form-check-label">Rental application</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Message</label>
+                        <textarea name="message" class="form-control" rows="3">Hi, I found this property on AUestate and would like to know more.</textarea>
+                    </div>
+
+                    <p class="small text-muted mt-3">
+                        <em>Disclaimer: Advice about the use of information solely for purpose of communication about the request. Information will not be used for marketing unless consent is given.</em>
+                    </p>
+
+                    <hr>
+                    <input type="submit" value="Submit" class="btn btn-block btn-danger">
+                    </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

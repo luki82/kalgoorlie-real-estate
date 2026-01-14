@@ -5,89 +5,141 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
+from django.core.paginator import Paginator  # <--- Added for Index Page
 from django.db.models import Q
-from .models import Listing, Contact
-from .forms import InvestorRequestForm
 
-# Configure Stripe with your keys from settings.py
+# --- IMPORTS ---
+from .models import Listing, Contact
+from realtors.models import Realtor
+from .forms import ListingForm
+
+# Configure Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# --- 1. PROPERTY DETAIL VIEW ---
+# --- 1. INDEX VIEW (THE MISSING PIECE) ---
+def index(request):
+    # Show all published listings, newest first
+    listings = Listing.objects.order_by('-list_date').filter(is_published=True)
+
+    # Pagination: Show 6 listings per page
+    paginator = Paginator(listings, 6)
+    page = request.GET.get('page')
+    paged_listings = paginator.get_page(page)
+
+    context = {
+        'listings': paged_listings
+    }
+    return render(request, 'listings/listings.html', context)
+
+# --- 2. PROPERTY DETAIL VIEW ---
 def listing(request, listing_id):
     listing_obj = get_object_or_404(Listing, pk=listing_id)
     context = {'listing': listing_obj}
     return render(request, 'listings/listing.html', context)
 
-# --- 2. CONTACT INQUIRY LOGIC ---
+# --- 3. CONTACT INQUIRY LOGIC ---
+# listings/views.py
+
+# listings/views.py
+
 def contact(request):
     if request.method == 'POST':
         listing_id = request.POST['listing_id']
         listing_title = request.POST['listing']
-        name = request.POST['name']
+        
+        # 1. Combine First and Last Name
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        full_name = f"{first_name} {last_name}"
+        
         email = request.POST['email']
         phone = request.POST['phone']
-        message = request.POST['message']
-        user_id = request.POST['user_id']
-
-        # SPAM CHECK
+        user_message = request.POST['message']
+        
+        # --- FIX: HANDLE USER ID SAFELY ---
+        # If user is logged in, use their ID.
+        # If user is Guest, use 0.
         if request.user.is_authenticated:
             user_id = request.user.id
+        else:
+            user_id = 0
+        # ----------------------------------
+
+        # 2. Capture New Fields
+        about_me = request.POST.get('about_me', 'Not specified')
+        interests = request.POST.getlist('interests') 
+        interests_str = ", ".join(interests) if interests else "General Inquiry"
+
+        # 3. Format the Final Message
+        formatted_message = (
+            f"{user_message}\n\n"
+            f"--- USER DETAILS ---\n"
+            f"Status: {about_me}\n"
+            f"Interested In: {interests_str}"
+        )
+
+        # SPAM CHECK (Only for logged in users)
+        if request.user.is_authenticated:
             has_contacted = Contact.objects.all().filter(listing_id=listing_id, user_id=user_id)
             if has_contacted:
                 messages.error(request, 'You have already made an inquiry for this listing.')
                 return redirect('listing', listing_id=listing_id)
 
+        # 4. Save to Database
         contact_obj = Contact(
-            listing=listing_title, listing_id=listing_id, name=name, 
-            email=email, phone=phone, message=message, user_id=user_id
+            listing=listing_title,
+            listing_id=listing_id,
+            name=full_name,
+            email=email,
+            phone=phone,
+            message=formatted_message,
+            user_id=user_id  # Now this is safely either an ID or 0
         )
         contact_obj.save()
 
         messages.success(request, 'Your inquiry has been submitted! A representative will contact you shortly.')
         return redirect('listing', listing_id=listing_id)
 
-# --- 3. CREATE LISTING VIEW ---
+# --- 4. CREATE LISTING VIEW ---
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
-    fields = [
-        'title', 'category', 'realtor_phone', 'address', 'city', 'state', 'zipcode', 
-        'description', 'expectations', 'price', 'bond', 'bedrooms', 'bathrooms', 
-        'is_pet_friendly', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 
-        'eligibility_criteria'
-    ]
+    form_class = ListingForm
     template_name = 'listings/listing_form.html'
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
-        form.instance.realtor = self.request.user
-        # FORCE DRAFT STATUS: Only Payment can change this to True
-        form.instance.is_published = False 
-        messages.success(self.request, 'Listing created! Payment is required to publish.')
-        return super().form_valid(form)
+        # We need to find the Realtor profile that matches the logged-in user
+        try:
+            # FIX: Use 'email__iexact' to ignore Capital Letters
+            realtor_profile = Realtor.objects.get(email__iexact=self.request.user.email)
+            form.instance.realtor = realtor_profile
+            
+            # FORCE DRAFT STATUS: Only Payment can change this to True
+            form.instance.is_published = False 
+            messages.success(self.request, 'Listing created! Payment is required to publish.')
+            return super().form_valid(form)
+            
+        except Realtor.DoesNotExist:
+            messages.error(self.request, "You must create a Realtor Profile before posting listings.")
+            return redirect('dashboard')
 
-# --- 4. UPDATE LISTING VIEW ---
+# --- 5. UPDATE LISTING VIEW ---
 class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Listing
-    fields = [
-        'title', 'category', 'realtor_phone', 'address', 'city', 'state', 'zipcode', 
-        'description', 'expectations', 'price', 'bond', 'bedrooms', 'bathrooms', 
-        'is_pet_friendly', 'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4', 
-        'eligibility_criteria'
-    ]
+    form_class = ListingForm
     template_name = 'listings/listing_form.html'
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
-        # Optional: If they edit, you might want to un-publish it, or keep it live.
-        # For now, let's keep it as is.
         messages.info(self.request, 'Listing updated.')
         return super().form_valid(form)
 
     def test_func(self):
         listing = self.get_object()
-        return self.request.user == listing.realtor
+        # Check if the logged in user's email matches the realtor's email on the listing
+        return self.request.user.email == listing.realtor.email
 
-# --- 5. DELETE LISTING VIEW ---
+# --- 6. DELETE LISTING VIEW ---
 class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Listing
     template_name = 'listings/listing_confirm_delete.html'
@@ -95,13 +147,13 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         listing = self.get_object()
-        return self.request.user == listing.realtor
+        return self.request.user.email == listing.realtor.email
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "The listing has been permanently removed.")
         return super().delete(request, *args, **kwargs)
 
-# --- 6. SEARCH VIEW ---
+# --- 7. SEARCH VIEW ---
 def search(request):
     queryset_list = Listing.objects.order_by('-list_date')
 
@@ -123,42 +175,23 @@ def search(request):
     if 'realtor' in request.GET:
         realtor_name = request.GET['realtor']
         if realtor_name:
-            queryset_list = queryset_list.filter(
-                Q(realtor__first_name__icontains=realtor_name) | 
-                Q(realtor__last_name__icontains=realtor_name)
-            )
+            # Search by Realtor Name (from the linked Realtor model)
+            queryset_list = queryset_list.filter(realtor__name__icontains=realtor_name)
 
     context = {
         'listings': queryset_list,
         'values': request.GET 
     }
-    return render(request, 'listings/search.html', context)
+    return render(request, 'pages/search.html', context)
 
-# --- 7. INVESTOR REQUEST ---
-def investor_request_view(request):
-    if request.method == 'POST':
-        form = InvestorRequestForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Request Received. Our Investor Relations team will review your profile.")
-            return redirect('index') 
-    else:
-        form = InvestorRequestForm()
-
-    return render(request, 'listings/investor_request.html', {'form': form})
 
 # ==========================================
-#      NEW: STRIPE PAYMENT LOGIC
+#       STRIPE PAYMENT LOGIC
 # ==========================================
 
 def create_checkout_session(request, listing_id):
-    """
-    Creates a Stripe Checkout Session for a specific listing.
-    """
     listing = get_object_or_404(Listing, pk=listing_id)
     
-    # Construct the full URL for the success page (e.g., https://auestate.com.au/listings/success/5/)
-    # We use request.build_absolute_uri to make sure it works on Localhost AND Live automatically.
     success_url = request.build_absolute_uri(f'/listings/payment-success/{listing_id}/')
     cancel_url = request.build_absolute_uri('/listings/payment-cancelled/')
 
@@ -189,20 +222,13 @@ def create_checkout_session(request, listing_id):
         return redirect('dashboard')
 
 def payment_success(request, listing_id):
-    """
-    Triggered when Stripe payment is successful.
-    Finds the listing and sets is_published = True.
-    """
     listing = get_object_or_404(Listing, pk=listing_id)
     
-    # THE MAGIC: Publish the listing!
+    # PUBLISH THE LISTING
     listing.is_published = True
     listing.save()
     
     return render(request, 'listings/payment_success.html', {'listing': listing})
 
 def payment_cancelled(request):
-    """
-    Triggered if user clicks 'Back' or 'Cancel' in Stripe.
-    """
     return render(request, 'listings/payment_cancelled.html')

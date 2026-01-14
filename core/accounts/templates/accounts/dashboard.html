@@ -44,19 +44,19 @@
                   
                   <td class="text-center">
 
-                    {% if listing.is_published %}
-                        <span class="badge bg-success me-1"><i class="fas fa-check-circle"></i> Live</span>
-                        <a href="{% url 'listing' listing.id %}" class="btn btn-outline-dark btn-sm" target="_blank">View</a>
+                                {% if listing.id in paid_listing_ids %}
+                      <button class="btn btn-success" disabled>
+                          <i class="fas fa-check-circle"></i> Paid (Approval Pending)
+                      </button>
 
-                    {% else %}
-                        <form action="{% url 'create_checkout_session' listing.id %}" method="POST" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning btn-sm me-1">
-                                <i class="fas fa-credit-card"></i> Pay $50 to Publish
-                            </button>
-                        </form>
-                        <span class="badge bg-secondary">Draft</span>
-                    {% endif %}
+                  {% else %}
+                      <form action="{% url 'create_checkout_session' listing.id %}" method="POST">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-success">
+                              Pay to publish
+                          </button>
+                      </form>
+                  {% endif %}
 
                     <a href="{% url 'listing-update' listing.id %}" class="btn btn-dark btn-sm">Edit</a>
                     <a href="{% url 'listing-delete' listing.id %}" class="btn btn-danger btn-sm">Delete</a>

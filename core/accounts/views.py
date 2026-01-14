@@ -1,30 +1,40 @@
+# accounts/views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
-from listings.models import Listing
-from payments.models import Payment  # <--- Essential Import
 
-# --- 1. DASHBOARD VIEW (The Smart Version) ---
+# Models
+from listings.models import Listing
+from realtors.models import Realtor  # <--- Needed for the fix
+from payments.models import Payment  # <--- Needed for payment checks
+
+# --- 1. DASHBOARD VIEW ---
 @login_required
 def dashboard(request):
-    # Get all listings for this user
-    user_listings = Listing.objects.order_by('-list_date').filter(realtor=request.user)
-    
-    # Get the list of IDs for listings that have been PAID for.
-    # We wrap it in list() to make it a simple Python list [1, 4, 5]
-    # If we don't do this, the HTML template cannot check "if id in list"
-    paid_listing_ids = list(
-        Payment.objects.filter(user=request.user).values_list('listing_id', flat=True)
-    )
+    user_listings = []
 
-    # Debugging print to see what's happening in your terminal
-    print(f"DEBUG: Paid IDs for {request.user.username}: {paid_listing_ids}")
+    # A. Get Listings (The Fix for the "Must be Realtor Instance" error)
+    try:
+        # We try to find a Realtor that matches the logged-in User's email
+        agent_profile = Realtor.objects.get(email=request.user.email)
+        
+        # If found, we get the listings linked to that specific Realtor profile
+        user_listings = Listing.objects.filter(realtor=agent_profile).order_by('-list_date')
+        
+    except Realtor.DoesNotExist:
+        # If the user is just a regular buyer (not in the Realtor table), 
+        # they won't have any listings to manage.
+        pass
+
+    # B. Get Payment Status (Your existing logic)
+    # This creates a simple list of IDs (e.g., [1, 5, 8]) that the user has paid for.
+    paid_listing_ids = Payment.objects.filter(user=request.user).values_list('listing_id', flat=True)
 
     context = {
         'listings': user_listings,
-        'paid_listing_ids': paid_listing_ids 
+        'paid_listing_ids': paid_listing_ids,
     }
     return render(request, 'accounts/dashboard.html', context)
 
@@ -33,7 +43,7 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
             messages.success(request, 'Account created! You can now log in.')
             return redirect('login')
         else:
@@ -49,7 +59,6 @@ def login(request):
         if form.is_valid():
             auth.login(request, form.get_user())
             messages.success(request, 'You are now logged in.')
-            # Redirect to dashboard immediately after login
             return redirect('dashboard')
         else:
             messages.error(request, 'Invalid credentials.')

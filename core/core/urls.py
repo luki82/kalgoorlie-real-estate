@@ -30,7 +30,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('payments/', include('payments.urls')),
    # path('contacts/', include('contacts.urls')),
-    path('admin/', admin.site.urls), # Make sure this says .urls not .path
+   path('staff-portal-secure/', admin.site.urls),
+    #path('admin/', admin.site.urls), # Make sure this says .urls not .path
   
 
     # PASSWORD RESET PATHS

@@ -1,7 +1,14 @@
 from django.db.models import Q
-from django.shortcuts import render
+
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from listings.models import Listing
+
+
+from django.shortcuts import render, redirect  # <--- Added 'redirect' here
+from django.contrib import messages            # <--- For your success message
+from listings.forms import InvestorRequestForm # <--- For the form itself
+
+# ... rest of your code ...
 
 def index(request):
     # 1. Fetch the data for each column
@@ -64,3 +71,17 @@ def about(request):
 
 def services(request):
     return render(request, 'pages/services.html')
+
+
+# --- 7. INVESTOR REQUEST ---
+def investor_request_view(request):
+    if request.method == 'POST':
+        form = InvestorRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Request Received. Our Investor Relations team will review your profile.")
+            return redirect('index') 
+    else:
+        form = InvestorRequestForm()
+
+    return render(request, 'listings/investor_request.html', {'form': form})

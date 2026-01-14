@@ -63,10 +63,11 @@ INSTALLED_APPS = [
     # Custom Apps (I added the missing ones back!)
     'accounts',
     'listings',
-    #'realtors',  # ### Added back
+    'realtors',  # <--- Add this!
    # 'contacts',  # ### Added back
     'pages',
     'payments',  # Assuming you are adding this new feature
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +80,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # ... existing middleware ...
+    'core.middleware.RestrictAdminMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -179,19 +182,6 @@ CACHES = {
 
 
 
-# 3 action to be done before going live!    
-# 1 seceret key to be put in .env 
-# turn of debug
-# set up email , and payment intergration
-
-# --- EMAIL CONFIGURATION (Gmail) ---
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('wkop abmd llbq eagl')
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # settings.py
@@ -214,3 +204,37 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # ... existing code ...
+# AWS S3 SETTINGS
+# We check if the keys exist (so it doesn't break on your local computer if you haven't added them yet)
+if os.environ.get('AWS_ACCESS_KEY_ID'):
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    
+    # Regional Settings (Sydney)
+    AWS_S3_REGION_NAME = 'ap-southeast-2'
+    AWS_S3_SIGNATURE_VERSION = 's3v4'
+    
+    # File Settings
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_S3_VERIFY = True
+    
+    # This makes the images "Public" by default so your website can show them
+    AWS_QUERYSTRING_AUTH = False 
+    
+    # Domain Settings
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+    # Tell Django to use S3 for "Media" (uploaded photos)
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+    
+    # The URL your website will use to find the images
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
