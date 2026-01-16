@@ -1,0 +1,63 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<section id="register" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4><i class="fas fa-user-tie"></i> Become a Realtor</h4>
+          </div>
+          <div class="card-body">
+            <p>You need a Realtor profile to manage listings.</p>
+            
+            <form action="{% url 'create-realtor' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" name="phone" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>Description (Bio)</label>
+                <textarea name="description" class="form-control" rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Profile Photo</label>
+                <input type="file" name="photo" class="form-control-file">
+              </div>
+
+              <form action="{% url 'create-realtor' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  
+                  <div class="form-group form-check mt-3">
+                    <input type="checkbox" name="terms" class="form-check-input" id="termsCheck" required>
+                    <label class="form-check-label" for="termsCheck">
+                      I agree to the <a href="{% url 'terms' %}" target="_blank" class="text-primary">Terms and Conditions</a>
+                      and the <a href="#" class="text-primary">Privacy Policy</a>.
+                    </label>
+                    <small class="form-text text-muted">
+                      You must accept the terms to continue.
+                    </small>
+                  </div>
+
+                 
+
+
+              <input type="submit" value="Create Profile" class="btn btn-secondary btn-block mt-3">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

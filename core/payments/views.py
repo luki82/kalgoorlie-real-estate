@@ -17,45 +17,43 @@ stripe.api_key ='sk_test_51SllcwRTtkWSFirAkeHJ2tCLaLvqJMv3gEuzSeJ1vJ5xi1HQAIy6S4
 def create_checkout_session(request, listing_id):
     listing = get_object_or_404(Listing, id=listing_id)
     
-    # 1. Security Check: Prevent double payments
+    # 1. Security Check
     if listing.is_published:
         messages.warning(request, "This listing is already active!")
         return redirect('dashboard')
 
-    # 2. Determine Domain (Local vs Live)
+    # 2. Determine Domain
     if settings.DEBUG:
         YOUR_DOMAIN = "http://127.0.0.1:8000" 
     else:
-        YOUR_DOMAIN = "https://auestate.onrender.com"
+        YOUR_DOMAIN = "https://auestate.com.au"
 
-    try:
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[
-                {
-                    'price_data': {
-                        'currency': 'aud',
-                        'unit_amount': 5000, # $50.00
-                        'product_data': {
-                            'name': f"Activation Fee: {listing.title}",
-                        },
+    # 3. Create Session (No 'try' block here, so errors will show up!)
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[
+            {
+                'price_data': {
+                    'currency': 'aud',
+                    'unit_amount': 5000, 
+                    'product_data': {
+                        'name': f"Activation Fee: {listing.title}",
                     },
-                    'quantity': 1,
                 },
-            ],
-            mode='payment',
-            metadata={
-                'listing_id': listing.id,
-                'user_id': request.user.id
+                'quantity': 1,
             },
-            success_url=YOUR_DOMAIN + reverse('payment_success', args=[listing.id]) + '?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=YOUR_DOMAIN + reverse('payment_cancelled'),
-        )
-        return redirect(checkout_session.url, code=303)
+        ],
+        mode='payment',
+        metadata={
+            'listing_id': listing.id,
+            'user_id': request.user.id
+        },
+        success_url=YOUR_DOMAIN + reverse('payment_success', args=[listing.id]) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=YOUR_DOMAIN + reverse('payment_cancelled'),
+    )
+    
+    return redirect(checkout_session.url)
 
-    except Exception as e:
-        messages.error(request, f"Error connecting to Stripe: {str(e)}")
-        return redirect('dashboard')
 
 @login_required
 def payment_success(request, listing_id):

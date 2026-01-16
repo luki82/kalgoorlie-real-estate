@@ -18,7 +18,7 @@ urlpatterns = [
     path('<int:pk>/delete/', views.ListingDeleteView.as_view(), name='listing-delete'),
 
     # --- 5. CONTACT ---
-    path('contact/', views.contact, name='contact'),
+    path('inquiry', views.inquiry, name='inquiry'),
 
     # --- 6. PAYMENTS ---
     path('checkout/<int:listing_id>/', views.create_checkout_session, name='create_checkout_session'),

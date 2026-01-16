@@ -41,32 +41,36 @@
                   </td>
                   <td><span class="badge bg-secondary">{{ listing.get_category_display }}</span></td>
                   <td>${{ listing.price|intcomma }}</td>
-                  
+                                
                   <td class="text-center">
-
-                                {% if listing.id in paid_listing_ids %}
-                      <button class="btn btn-success" disabled>
-                          <i class="fas fa-check-circle"></i> Paid (Approval Pending)
+                  
+                  {% if listing.is_published %}
+                      
+                      <button class="btn btn-secondary btn-sm" disabled>
+                          <i class="fas fa-check-circle"></i> Online
                       </button>
 
                   {% else %}
+                  
                       <form action="{% url 'create_checkout_session' listing.id %}" method="POST">
                           {% csrf_token %}
-                          <button type="submit" class="btn btn-success">
-                              Pay to publish
+                          <button type="submit" class="btn btn-success btn-sm">
+                              Pay to Publish
                           </button>
                       </form>
+                      
                   {% endif %}
 
-                    <a href="{% url 'listing-update' listing.id %}" class="btn btn-dark btn-sm">Edit</a>
-                    <a href="{% url 'listing-delete' listing.id %}" class="btn btn-danger btn-sm">Delete</a>
-                </td>
+                  <div class="mt-2">
+                      <a href="{% url 'listing-update' listing.id %}" class="btn btn-dark btn-sm">Edit</a>
+                      <a href="{% url 'listing-delete' listing.id %}" class="btn btn-danger btn-sm">Delete</a>
+                  </div>
+
+                  </td>
                   
                 </tr>
                 {% endfor %}
               </tbody>
-
-
 
             </table>
           </div>

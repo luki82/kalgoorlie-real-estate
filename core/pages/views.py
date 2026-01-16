@@ -85,3 +85,24 @@ def investor_request_view(request):
         form = InvestorRequestForm()
 
     return render(request, 'listings/investor_request.html', {'form': form})
+
+
+    # pages/views.py
+def terms(request):
+    return render(request, 'pages/terms.html')
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        # Save to Database
+        contact = Contact(name=name, email=email, subject=subject, message=message)
+        contact.save()
+
+        messages.success(request, 'Your request has been submitted, a realtor will get back to you soon')
+        return redirect('contact')
+
+    return render(request, 'pages/contact.html')

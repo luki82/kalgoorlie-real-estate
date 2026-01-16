@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<section id="terms" class="py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 mx-auto">
+        
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body text-center p-5">
+                <h1 class="display-4 text-primary">Terms and Conditions</h1>
+                <p class="lead text-muted">Please read these terms carefully before using our services.</p>
+                <hr class="my-4">
+                <p class="text-muted">Last Updated: January 14, 2026</p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-5">
+            
+            <h4 class="mb-3">1. Introduction</h4>
+            <p>Welcome to <strong>AUestate</strong> ("we," "us," "our"). These Terms and Conditions ("Terms") govern your access to and use of the AUestate website (auestate.com.au) and our property advertising services. By accessing, browsing, or registering on our site, you agree to be bound by these Terms. <strong>If you do not agree, you must cease using our services immediately.</strong></p>
+
+            <h4 class="mt-4 mb-3">2. Nature of Services</h4>
+            <p>AUestate operates as a <strong>digital advertising platform</strong> that allows verified users ("Realtors," "Agents," or "Property Owners") to publish property listings for rent or sale.</p>
+            <ul>
+                <li><strong>Advertising Only:</strong> Unless explicitly stated otherwise, AUestate acts as the publisher of information provided by users. We are not a party to any rental or sales transaction resulting from these listings.</li>
+                <li><strong>Licensed Advice:</strong> Professional real estate advice, compliant with the <em>Real Estate and Business Agents Act 1978 (WA)</em> and other relevant State/Territory laws, is provided solely by the licensed Real Estate Agents and Representatives registered on our platform, not by the platform software itself.</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">3. Account Security & Identity (The "Gatekeeper" Policy)</h4>
+            <p>To post listings or make payments, you must register a <strong>Realtor Profile</strong>.</p>
+            <ul>
+                <li><strong>Credentials:</strong> You are responsible for maintaining the confidentiality of your login credentials (email and password). You agree that any action performed under your account is deemed to be performed by you.</li>
+                <li><strong>Identity Verification:</strong> You must provide accurate, current, and complete information during registration. We reserve the right to suspend accounts that use false names, disposable emails, or impersonate others.</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">4. Payments, KYC, and Card Ownership Policy</h4>
+            <p>AUestate maintains strict <strong>Know Your Customer (KYC)</strong> and anti-fraud protocols.</p>
+            <ul>
+                <li><strong>Authorized Payment Method:</strong> You strictly agree that <strong>you may only use a credit or debit card that is issued in your own legal name</strong> or the legal name of the registered business entity you represent.</li>
+                <li><strong>Name Matching:</strong> The name on your AUestate Realtor Profile must match the billing name on the payment method used via our payment processor (Stripe).</li>
+                <li><strong>Third-Party Payments Prohibited:</strong> The use of stolen cards, third-party cards without express notarized authorization, or anonymous prepaid cards is strictly prohibited.</li>
+                <li><strong>Verification Checks:</strong> We reserve the right to trigger 3D Secure verification (sending a code to your phone) or request photo ID proof if a payment flag is raised. If the cardholder name does not match the logged-in user, the transaction may be reversed and the account suspended immediately.</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">5. User Conduct & Listing Accuracy</h4>
+            <ul>
+                <li><strong>Truth in Advertising:</strong> You warrant that all information, photos, and prices in your listings are accurate and not misleading, complying with Australian Consumer Law.</li>
+                <li><strong>Authority to List:</strong> You warrant that you are the legal owner of the property or the appointed agent with written authority to list the property.</li>
+                <li><strong>Prohibited Content:</strong> You must not post fake listings ("bait and switch"), discriminatory content, or properties that are not available for lease/sale.</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">6. Licensed Agents & Regulatory Compliance</h4>
+            <p>Users operating as <strong>Real Estate Agents</strong> or <strong>Property Managers</strong> on AUestate agree to:</p>
+            <ul>
+                <li>Hold a current, valid license or registration in the State or Territory where the property is located (e.g., Western Australia Department of Mines, Industry Regulation and Safety).</li>
+                <li>Adhere to their relevant Code of Conduct regarding trust accounting, disclosures, and professional behavior.</li>
+                <li>AUestate accepts no liability for the failure of an Agent to comply with their statutory obligations.</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">7. Refund & Cancellation Policy</h4>
+            <ul>
+                <li><strong>Advertising Fees:</strong> Fees paid to "Publish" a listing are for the service of hosting the advertisement.</li>
+                <li><strong>No Refunds for Change of Mind:</strong> Once a listing is published (Status: Online), fees are generally non-refundable, even if the property is sold/leased quickly or you remove the listing early.</li>
+                <li><strong>Exceptions:</strong> Refunds may be considered in cases of technical error (e.g., double charging) at the sole discretion of AUestate management.</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">8. Limitation of Liability</h4>
+            <p>To the maximum extent permitted by law:</p>
+            <ul>
+                <li>AUestate excludes all liability for any loss of data, interruption of business, or financial loss arising from your use of the site.</li>
+                <li>We do not guarantee that the site will be error-free or uninterrupted (though we strive for 99% uptime via our cloud providers).</li>
+            </ul>
+
+            <h4 class="mt-4 mb-3">9. Governing Law</h4>
+            <p>These Terms are governed by the laws of <strong>Western Australia</strong>. Any disputes arising from these Terms will be subject to the exclusive jurisdiction of the courts of Western Australia and the Commonwealth of Australia.</p>
+
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="{% url 'index' %}" class="btn btn-secondary">Back to Home</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
