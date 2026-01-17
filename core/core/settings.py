@@ -81,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # ... existing middleware ...
-    'core.middleware.RestrictAdminMiddleware',
+    #'core.middleware.RestrictAdminMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
