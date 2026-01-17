@@ -28,7 +28,7 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 # This logic means: If the environment says "False", it's False. Otherwise default to True.
 #DEBUG = os.environ.get('DEBUG') == 'True'
 if os.environ.get('RENDER'):
-    DEBUG = False
+    DEBUG = True
 else:
     DEBUG = True
 
