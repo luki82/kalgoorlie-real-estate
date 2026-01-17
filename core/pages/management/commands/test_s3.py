@@ -15,6 +15,14 @@ class Command(BaseCommand):
         bucket_name = os.environ.get('AWS_STORAGE_BUCKET_NAME')
         region = os.environ.get('AWS_S3_REGION_NAME', 'ap-southeast-2')
 
+        print(f"Key ID: {key_id}")
+        if secret:
+            print(f"Secret Key Length: {len(secret)}")  # <--- THIS IS THE TRAP
+            print(f"Secret Starts with: {secret[:3]}...") # Check start
+            print(f"Secret Ends with: ...{secret[-3:]}")  # Check end
+        else:
+            print("❌ ERROR: AWS_SECRET_ACCESS_KEY is Missing!")
+
         # Print masked keys to verify they are loaded
         if key_id:
             print(f"Key ID: {key_id[:4]}...{key_id[-4:]}")
