@@ -3,29 +3,30 @@
 {% load humanize %}
 
 {% block content %}
-<section id="showcase" class="text-white py-5 position-relative" style="height: 600px; overflow: hidden;">
 
-    <video autoplay muted loop playsinline 
-           style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -2; transform: translate(-50%, -50%); object-fit: cover;">
-        <source src="{% static 'img/leanora_banner.mp4' %}" type="video/mp4">
-        Your browser does not support HTML5 video.
-    </video>
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
 
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: -1;"></div>
+{% block content %}
+<section id="showcase" class="text-white py-6" 
+    style="background: url('{% static 'img/leanora.jpeg' %}') no-repeat top center fixed; background-size: cover; position: relative;">
 
-    <div class="container h-100">
-        <div class="row text-center align-items-center h-100">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);"></div>
+
+    <div class="container position-relative">
+        <div class="row text-center">
             <div class="col-md-12">
                 
                 <h1 class="display-4 mb-4 fw-bold">Find Your Home in the Goldfields</h1>
-                <p class="lead mb-5">From the Goldfields, we have the best properties for rent, sale, and crisis accommodation.</p>
+                <p class="lead mb-5">auestate have the best properties for rent, sale, and crisis accommodation.</p>
                 
                 <div class="search p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);">
                     <form action="{% url 'search' %}">
                         <div class="row mb-3">
                             <div class="col-md-4 mb-3">
                                 <label class="sr-only">Keywords</label>
-                                <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Garage, etc)">
+                                <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Shed, etc)">
                             </div>
 
                             <div class="col-md-4 mb-3">

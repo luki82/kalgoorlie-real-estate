@@ -1,9 +1,24 @@
 # .gitignore
+# --- Python & Django ---
 *.pyc
-__pycache__
+__pycache__/
+*.log
 db.sqlite3
 .env
+
+# --- Virtual Environments ---
 /django_env
 /venv
+/env
+
+# --- Media & Static ---
+# Ignore user-uploaded files (Media), but KEEP site design assets (Static)
+/media/
+
+# --- Operating System Junk ---
 .DS_Store
-/media
+Thumbs.db
+
+# --- Editor Settings 
+.vscode/
+.idea/
