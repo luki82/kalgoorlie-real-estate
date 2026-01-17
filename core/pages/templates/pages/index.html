@@ -3,12 +3,6 @@
 {% load humanize %}
 
 {% block content %}
-
-{% extends 'base.html' %}
-{% load static %}
-{% load humanize %}
-
-{% block content %}
 <section id="showcase" class="text-white py-6" 
     style="background: url('{% static 'img/leanora.jpeg' %}') no-repeat top center fixed; background-size: cover; position: relative;">
 
@@ -53,8 +47,11 @@
         </div>
     </div>
 </section>
+
 <div class="container mb-5">
-    <div class="row g-3"> <div class="col-lg-4">
+    <div class="row g-3"> 
+        
+        <div class="col-lg-4">
             <div class="p-2 border-bottom border-danger border-3 mb-2">
                 <h4 class="text-danger m-0"><i class="fas fa-key me-2"></i>Rentals</h4>
             </div>
