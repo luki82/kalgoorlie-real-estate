@@ -24,13 +24,16 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    
+    path('staff-portal-secure/', admin.site.urls),
     path('', include('pages.urls')),
     path('listings/', include('listings.urls')),
     path('accounts/', include('accounts.urls')),
     path('payments/', include('payments.urls')),
+    admin.site.site_header = "AUestate Staff Portal"
+    admin.site.site_title = "AUestate Admin"
+    admin.site.index_title = "Welcome to the Realtor Dashboard"
    # path('contacts/', include('contacts.urls')),
-   path('staff-portal-secure/', admin.site.urls),
+   
     #path('admin/', admin.site.urls), # Make sure this says .urls not .path
   
 
