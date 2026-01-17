@@ -28,7 +28,7 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 # This logic means: If the environment says "False", it's False. Otherwise default to True.
 #DEBUG = os.environ.get('DEBUG') == 'True'
 if os.environ.get('RENDER'):
-    DEBUG = True
+    DEBUG = False
 else:
     DEBUG = True
 
@@ -203,38 +203,27 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
-# ... existing code ...
-# AWS S3 SETTINGS
-# We check if the keys exist (so it doesn't break on your local computer if you haven't added them yet)
-if os.environ.get('AWS_ACCESS_KEY_ID'):
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-    
-    # Regional Settings (Sydney)
-    AWS_S3_REGION_NAME = 'ap-southeast-2'
-    AWS_S3_SIGNATURE_VERSION = 's3v4'
-    
-    # File Settings
-    AWS_S3_FILE_OVERWRITE = False
-    AWS_DEFAULT_ACL = None
-    AWS_S3_VERIFY = True
-    
-    # This makes the images "Public" by default so your website can show them
-    AWS_QUERYSTRING_AUTH = False 
-    
-    # Domain Settings
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
-    # Tell Django to use S3 for "Media" (uploaded photos)
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
-    }
-    
-    # The URL your website will use to find the images
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    # --- AWS S3 SETTINGS (PRODUCTION READY) ---
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+# Region & Signature (Crucial for Sydney)
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'ap-southeast-2')
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+# File Storage Configuration
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# ✅ THE FIX: Make files Public and URLs Clean
+AWS_DEFAULT_ACL = 'public-read'       # Allows the public to see images
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',  # Tells browsers to cache images (faster site)
+}
+AWS_QUERYSTRING_AUTH = False          # Removes the ugly "?Signature=..." from URLs
+AWS_S3_FILE_OVERWRITE = False         # Don't delete old files with same name
+
+# ✅ DOMAIN CONFIGURATION
+# This tells Django: "Don't look in /media/, look at the S3 Link"
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
