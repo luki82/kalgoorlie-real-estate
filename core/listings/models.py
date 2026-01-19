@@ -92,14 +92,14 @@ class Listing(models.Model):
 
     # --- 7. METADATA & STATUS ---
     is_published = models.BooleanField(default=True)
-    list_date = models.DateTimeField(default=timezone.now, blank=True)
+    list_date = models.DateField(default=timezone.now, blank=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='RENTAL')
     is_pet_friendly = models.BooleanField(default=False, verbose_name="Is Pet Friendly?")
     
     expectations = models.TextField(blank=True, default="Standard residential maintenance applies.")
     eligibility_criteria = models.TextField(blank=True, help_text="Who is eligible to apply?")
 
-    next_inspection = models.DateTimeField(blank=True, null=True)
+    next_inspection = models.DateField(blank=True, null=True)
     inspection_booking_url = models.URLField(blank=True)
 
     tier = models.CharField(max_length=10, choices=TIER_CHOICES, default='TIER1')
