@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'pages',
     'payments',  # Assuming you are adding this new feature
     'storages',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
