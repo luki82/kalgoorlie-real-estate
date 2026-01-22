@@ -5,9 +5,15 @@ from .models import Listing, InvestorLead
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        # We exclude 'realtor' and 'list_date' because they are handled automatically
-        exclude = ('realtor', 'list_date', 'is_published')
-        
+        # ✅ FIX: Removed 'realtor_phone' from this list
+        fields = [
+            'title', 'address', 'city', 'state', 'zipcode', 
+            'description', 'expectations', 'eligibility_criteria', 
+            'category', 'price', 'bond', 'bedrooms', 'bathrooms', 
+            'is_pet_friendly', 
+            'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4'
+        ]
+
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Property Title'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
@@ -22,8 +28,11 @@ class ListingForm(forms.ModelForm):
             'bond': forms.NumberInput(attrs={'class': 'form-control'}),
             'bedrooms': forms.NumberInput(attrs={'class': 'form-control'}),
             'bathrooms': forms.NumberInput(attrs={'class': 'form-control'}),
-            'realtor_phone': forms.TextInput(attrs={'class': 'form-control'}),
+            
+            # 'realtor_phone': REMOVED (This belongs to the User, not the Listing)
+            
             'is_pet_friendly': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            
             'photo_main': forms.FileInput(attrs={'class': 'form-control'}),
             'photo_1': forms.FileInput(attrs={'class': 'form-control'}),
             'photo_2': forms.FileInput(attrs={'class': 'form-control'}),
@@ -47,7 +56,7 @@ class InvestorRequestForm(forms.ModelForm):
             'is_accredited': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
-# --- 3. CONTACT AGENT FORM (New!) ---
+# --- 3. CONTACT AGENT FORM ---
 class ContactAgentForm(forms.Form):
     # Choices for "About Me"
     ABOUT_CHOICES = [
