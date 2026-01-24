@@ -2,12 +2,9 @@
 Django settings for core project.
 """
 import os
-
-import sys 
-
 import dj_database_url
 from pathlib import Path
-from dotenv import load_dotenv # <--- Import this
+from dotenv import load_dotenv 
 
 # Load variables from .env file
 load_dotenv()
@@ -16,31 +13,22 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- SECURITY CONFIGURATION ---
-# SECURITY WARNING: keep the secret key used in production secret!
-# We will use an Environment Variable for this later. 
-# For now, this is okay ONLY for your local computer.
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-unsafe-key-for-dev')
-
 
 # Stripe Configuration
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# This logic means: If the environment says "False", it's False. Otherwise default to True.
-#DEBUG = os.environ.get('DEBUG') == 'True'
+# SECURITY: False in production (Render), True locally.
 if os.environ.get('RENDER'):
-    DEBUG = True
+    DEBUG = False
 else:
     DEBUG = True
 
-#ALLOWED_HOSTS = [] # Add your domain (e.g., 'iioptions.com.au') here when live.
 ALLOWED_HOSTS = [
     'auestate.com.au', 
     'www.auestate.com.au', 
     'your-render-app.onrender.com',
-    # You can keep these here safely
     'auestate.com',
     'www.auestate.com',
     '127.0.0.1',
@@ -63,20 +51,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     
-    # Custom Apps (I added the missing ones back!)
-    'accounts',
-    'listings',
-    'realtors',  # <--- Add this!
-   # 'contacts',  # ### Added back
-    'pages',
-    'payments',  # Assuming you are adding this new feature
+    # Third Party Apps
     'storages',
     'django_cleanup.apps.CleanupConfig',
+
+    # Custom Apps
+    'accounts',
+    'listings',
+    'realtors', 
+    'pages',
+    'payments', 
+    # 'contacts', 
 ]
 
 MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware', # Compresses content for speed
-    'django.middleware.security.SecurityMiddleware', # ### Removed duplicate line
+    'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -84,8 +74,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # ... existing middleware ...
-    #'core.middleware.RestrictAdminMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -109,8 +97,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # --- DATABASE ---
-
-# DATABASE CONFIGURATION
 # If we are on Render, use their database. If on laptop, use SQLite.
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
@@ -128,7 +114,6 @@ else:
     }
 
 
-
 # --- PASSWORD VALIDATION ---
 AUTH_PASSWORD_VALIDATORS = [
     { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
@@ -139,43 +124,27 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # --- INTERNATIONALIZATION ---
-
 LANGUAGE_CODE = 'en-us'
-
-# ### Kalgoorlie Engineering Standard
-# Changing from UTC to Perth time ensures your listing dates are accurate
 TIME_ZONE = 'Australia/Perth' 
-
 USE_I18N = True
 USE_TZ = True
 
 
 # --- STATIC & MEDIA FILES ---
 
-
-# STATIC FILES CONFIGURATION
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Where files go on the server
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # Where they are now
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# Enable WhiteNoise compression and caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-
-# User Uploads
-MEDIA_URL = '/media/'
+# User Uploads (Local default)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # --- CUSTOM AUTH ---
-# Ensure your 'accounts' app has a model named 'User' or this will crash!
 AUTH_USER_MODEL = 'accounts.User' 
 LOGIN_URL = 'login' 
 
 
 # --- CACHE ---
-# Simple development cache
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -184,73 +153,46 @@ CACHES = {
 }
 
 
-
-
-
-
-# settings.py
-
-# ... existing code ...
-
-# EMAIL CONFIGURATION (Microsoft 365 / GoDaddy)
+# --- EMAIL CONFIGURATION ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-# Your new professional email address
-EMAIL_HOST_USER = 'admin@auestate.com.au'  # <--- CHANGE THIS to your actual email
+EMAIL_HOST_USER = 'admin@auestate.com.au'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-# SECURITY WARNING: Never type the actual password here!
-# We will read it from the Render Environment instead.
-
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
-    # --- AWS S3 SETTINGS (PRODUCTION READY) ---
-
-
-
-# --- AWS S3 SETTINGS (THE FINAL FIX) ---
+# --- AWS S3 SETTINGS (CONSOLIDATED) ---
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'ap-southeast-2')
 
-# 1. Configuration
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# 2. Permissions (Public)
-AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
-
-# 3. THE URL FIX (This is what you were missing)
-# This tells Django: "When you create a link, use this S3 address"
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
-
-# In core/settings.py
-
-
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-
+# Logic: If AWS Keys exist, use S3. If not, use local files.
 if AWS_ACCESS_KEY_ID:
     print("✅ AWS KEYS FOUND! Using S3 Storage.")
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    
+    # 1. Configuration
+    AWS_S3_SIGNATURE_VERSION = 's3v4'
+    AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_FILE_OVERWRITE = False
+
+    # 2. Domain & URL
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+    # 3. Storage Engine (Django 4.2+ Standard)
     STORAGES = {
         "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
         "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
     }
 else:
-    print("⚠️ NO AWS KEYS FOUND. Falling back to Local Storage (Images will break on Render).")
+    print("⚠️ NO AWS KEYS FOUND. Falling back to Local Storage.")
+    MEDIA_URL = '/media/'
     STORAGES = {
         "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+        "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
     }

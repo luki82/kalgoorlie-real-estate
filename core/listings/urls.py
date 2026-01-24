@@ -1,9 +1,11 @@
 from django.urls import path
 from . import views
 from .views import ListingCreateView, ListingUpdateView, ListingDeleteView
+from django.urls import path
+from . import views
+
 urlpatterns = [
-    # --- 1. THE MISSING FIX ---
-    # This names the main page 'listings', so {% url 'listings' %} works.
+    # --- 1. MAIN LISTINGS PAGE ---
     path('', views.index, name='listings'), 
 
     # --- 2. SEARCH ---
@@ -20,8 +22,8 @@ urlpatterns = [
     # --- 5. CONTACT ---
     path('inquiry', views.inquiry, name='inquiry'),
 
-    # --- 6. PAYMENTS ---
-    path('checkout/<int:listing_id>/', views.create_checkout_session, name='create_checkout_session'),
-    path('payment-success/<int:listing_id>/', views.payment_success, name='payment_success'),
-    path('payment-cancelled/', views.payment_cancelled, name='payment_cancelled'),
+    # --- 6. PAYMENTS (UPDATED) ---
+    # We replaced the 3 old URLs (create_checkout, success, cancel) 
+    # with this SINGLE path that handles the form display AND processing.
+    path('payment/<int:listing_id>/', views.payment_view, name='payment_view'),
 ]
