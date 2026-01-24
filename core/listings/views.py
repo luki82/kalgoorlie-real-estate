@@ -94,6 +94,15 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
+        # --- SPY CODE START ---
+        print("--------------------------------------------------")
+        print(f"🕵️ SPY REPORT: Submitting Form for User: {self.request.user}")
+        print(f"📁 FILES RECEIVED: {self.request.FILES}") 
+        # If this says <MultiValueDict: {}> then the HTML is broken.
+        # If this shows data, then the Storage/AWS is broken.
+        print("--------------------------------------------------")
+        # --- SPY CODE END ---
+
         # We need to find the Realtor profile that matches the logged-in user
         try:
             # FIX: Use 'email__iexact' to ignore Capital Letters
