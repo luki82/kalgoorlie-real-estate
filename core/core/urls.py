@@ -34,7 +34,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('listings/', include('listings.urls')),
     path('accounts/', include('accounts.urls')),
-    path('payments/', include('payments.urls')),
+    #path('payments/', include('payments.urls')),
     
     # Password Reset Paths
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="registration/password_reset.html"), name="reset_password"),

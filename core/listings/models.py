@@ -22,10 +22,12 @@ class Listing(models.Model):
         ('VILLAGE', 'Village / Workforce Accom'),
     ]
 
+    # --- UPDATED PRICING TIERS ---
+    # These keys ('Basic', 'Premium', 'Platinum') MUST match what is in your views.py
     TIER_CHOICES = [
-        ('TIER1', 'Tier 1: Standard (DIY)'),
-        ('TIER2', 'Tier 2: Village/Motel (Daily Mgmt)'),
-        ('TIER3', 'Tier 3: Premium (Assisted)'),
+        ('Basic', 'Tier 1: Basic ($99)'),
+        ('Premium', 'Tier 2: Premium ($149)'),
+        ('Platinum', 'Tier 3: Platinum ($299)'),
     ]
 
     FURNISHED_CHOICES = [
@@ -40,7 +42,7 @@ class Listing(models.Model):
     # --- 3. BASIC DETAILS ---
     title = models.CharField(max_length=200)
     
-    # NEW: Property Type Selector
+    # Property Type Selector
     property_type = models.CharField(
         max_length=20, 
         choices=PROPERTY_TYPE_CHOICES, 
@@ -58,7 +60,6 @@ class Listing(models.Model):
     bond = models.IntegerField(default=0, blank=True)
     
     # --- 4. PROPERTY SPECS ---
-    # For LAND, users can enter 0 for beds/baths
     bedrooms = models.IntegerField()
     bathrooms = models.DecimalField(max_digits=2, decimal_places=1)
     garage = models.IntegerField(default=0, verbose_name="Car Spaces")
@@ -79,7 +80,6 @@ class Listing(models.Model):
     )
 
     # --- 5. VILLAGE / HOTEL SPECIFIC ---
-    # Used if property_type is 'VILLAGE' or 'HOTEL'
     total_units = models.IntegerField(default=1, verbose_name="Total Units in Complex")
     vacant_units = models.IntegerField(default=0, verbose_name="Units Currently Available")
 
@@ -97,12 +97,13 @@ class Listing(models.Model):
     is_pet_friendly = models.BooleanField(default=False, verbose_name="Is Pet Friendly?")
     
     expectations = models.TextField(blank=True, default="Standard residential maintenance applies.")
-    eligibility_criteria = models.TextField(blank=True, help_text="Who is eligible to apply?")
+    eligibility_criteria = models.TextField(blank=True,)
 
     next_inspection = models.DateField(blank=True, null=True)
     inspection_booking_url = models.URLField(blank=True)
 
-    tier = models.CharField(max_length=10, choices=TIER_CHOICES, default='TIER1')
+    # Updated max_length to accommodate new keys if needed
+    tier = models.CharField(max_length=20, choices=TIER_CHOICES, default='Basic')
     
     # --- 8. IMAGE OPTIMIZATION ---
     def save(self, *args, **kwargs):

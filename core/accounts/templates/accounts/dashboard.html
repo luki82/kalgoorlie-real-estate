@@ -52,7 +52,7 @@
 
                   {% else %}
                   
-                      <form action="{% url 'create_checkout_session' listing.id %}" method="POST">
+                      <form action="{% url 'payment_view' listing.id %}" method="POST">
                           {% csrf_token %}
                           <button type="submit" class="btn btn-success btn-sm">
                               Pay to Publish

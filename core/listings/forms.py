@@ -5,31 +5,53 @@ from .models import Listing, InvestorLead
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        # ✅ FIX: Removed 'realtor_phone' from this list
+        # ✅ FIX: Added 'tier' and 'property_type' to this list
         fields = [
-            'title', 'address', 'city', 'state', 'zipcode', 
-            'description', 'expectations', 'eligibility_criteria', 
-            'category', 'price', 'bond', 'bedrooms', 'bathrooms', 
+            'title', 
+            'property_type', # <--- NEW FIELD
+            'address', 
+            'city', 
+            'state', 
+            'zipcode', 
+            'description', 
+            'expectations', 
+            'eligibility_criteria', 
+            'category', 
+            'tier',          # <--- NEW FIELD (For pricing)
+            'price', 
+            'bond', 
+            'bedrooms', 
+            'bathrooms', 
+            'garage',        # <--- Added garage (was missing in your list but likely in model)
+            'sqft',          # <--- Added sqft
+            'lot_size',      # <--- Added lot_size
+            'furnished_status', # <--- Added furnished_status
             'is_pet_friendly', 
             'photo_main', 'photo_1', 'photo_2', 'photo_3', 'photo_4'
         ]
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Property Title'}),
+            'property_type': forms.Select(attrs={'class': 'form-select'}), # <--- Widget for Property Type
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'state': forms.TextInput(attrs={'class': 'form-control'}),
             'zipcode': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'expectations': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'What are your expectations for a tenant?'}),
-            'eligibility_criteria': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+            'eligibility_criteria': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,'placeholder': 'optional! low income tenant only'}),
+            
             'category': forms.Select(attrs={'class': 'form-select'}),
+            'tier': forms.Select(attrs={'class': 'form-select'}), # <--- Widget for Tier
+            'furnished_status': forms.Select(attrs={'class': 'form-select'}), # <--- Widget for Furnished Status
+
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
             'bond': forms.NumberInput(attrs={'class': 'form-control'}),
             'bedrooms': forms.NumberInput(attrs={'class': 'form-control'}),
             'bathrooms': forms.NumberInput(attrs={'class': 'form-control'}),
-            
-            # 'realtor_phone': REMOVED (This belongs to the User, not the Listing)
+            'garage': forms.NumberInput(attrs={'class': 'form-control'}),
+            'sqft': forms.NumberInput(attrs={'class': 'form-control'}),
+            'lot_size': forms.NumberInput(attrs={'class': 'form-control'}),
             
             'is_pet_friendly': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             
