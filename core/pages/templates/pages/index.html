@@ -4,7 +4,7 @@
 
 {% block content %}
 <section id="showcase" class="text-white py-6" 
-    style="background: url('{% static 'img/leanora.jpeg' %}') no-repeat top center fixed; background-size: cover; position: relative;">
+    style="background: url('{% static 'img/KB.jpg' %}') no-repeat top center fixed; background-size: cover; position: relative;">
 
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);"></div>
 
@@ -107,10 +107,11 @@
                                     <span class="text-muted small" style="font-size: 0.75rem;">
                                         <i class="fas fa-bed"></i> {{ item.bedrooms }} | <i class="fas fa-bath"></i> {{ item.bathrooms|floatformat:0 }}
                                     </span>
-                                </div>
-                                <p class="card-text text-muted small text-truncate mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>{{ item.city }}
+                                    <p class="card-text text-muted small text-truncate mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ item.address }}
                                 </p>
+                                </div>
+                               
                                 <a href="{% url 'listing' item.id %}" class="btn btn-danger btn-sm w-100 py-0" style="font-size: 0.8rem;">View</a>
                             </div>
                         </div>
@@ -140,17 +141,18 @@
                                 
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <span class="text-muted small" style="font-size: 0.75rem;">
-                                        <i class="fas fa-bed"></i> {{ item.bedrooms }} | <i class="fas fa-bath"></i> {{ item.bathrooms|floatformat:0 }}
+                                    <span class="text-danger fw-bold small">${{ item.price|intcomma }}/wk</span>
+                                     <i class="fas fa-bed"></i> {{ item.bedrooms }} | <i class="fas fa-bath"></i> {{ item.bathrooms|floatformat:0 }}
                                     </span>
                                 </div>
 
                                 <div class="bg-light p-1 rounded mb-2 border border-danger">
-                                    <p class="small mb-0 text-muted" style="font-size: 0.75rem; line-height: 1.2;">
-                                        <strong class="text-danger">Eligibility:</strong> {{ item.eligibility_criteria|truncatechars:30 }}
-                                    </p>
+                                    <p class="card-text text-muted small text-truncate mb-2">
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ item.address }}
+                                </p>
                                 </div>
                                 
-                                <a href="{% url 'listing' item.id %}" class="btn btn-danger btn-sm w-100 py-0" style="font-size: 0.8rem;">Check Eligibility</a>
+                                <a href="{% url 'listing' item.id %}" class="btn btn-danger btn-sm w-100 py-0" style="font-size: 0.8rem;">View</a>
                             </div>
                         </div>
                     </div>
