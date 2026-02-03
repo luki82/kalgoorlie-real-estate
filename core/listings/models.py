@@ -24,11 +24,15 @@ class Listing(models.Model):
 
     # --- UPDATED PRICING TIERS ---
     # These keys ('Basic', 'Premium', 'Platinum') MUST match what is in your views.py
+   # --- UPDATED TIERS ---
     TIER_CHOICES = [
-        ('Basic', 'Tier 1: Basic ($99)'),
-        ('Premium', 'Tier 2: Premium ($149)'),
-        ('Platinum', 'Tier 3: Platinum ($299)'),
+        ('Standard', 'Standard (DIY) - $99'),
+        ('Manager', 'Manager Subscription - $199/mo'),
+        ('FullService', 'Full Service - $550'),
     ]
+
+    # Update default to 'Standard' (since 'Basic' no longer exists)
+    tier = models.CharField(max_length=20, choices=TIER_CHOICES, default='Standard')
 
     FURNISHED_CHOICES = [
         ('Unfurnished', 'Unfurnished'),

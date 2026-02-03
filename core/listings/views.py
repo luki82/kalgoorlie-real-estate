@@ -130,82 +130,50 @@ def search(request):
 #       (Matching the Stripe Elements Template)
 # ==========================================
 
+# listings/views.py
+
 def payment_view(request, listing_id):
-    """
-    Handles the Checkout Page.
-    GET: Renders the payment form with Stripe Element.
-    POST: Receives the token, charges the card, saves receipt, and publishes.
-    """
+    # 1. Get the listing
     listing = get_object_or_404(Listing, pk=listing_id)
     
-    # --- DYNAMIC PRICING LOGIC (Fixed) ---
-    # 1. Define the prices in a dictionary
+    # 2. Define the prices (Indentation MUST be 4 spaces inside the function)
     tier_prices = {
-        'Basic': 9900,     # $99.00
-        'Premium': 14900,  # $149.00
-        'Platinum': 29900, # $299.00
+        'Standard': 9900,      # $99.00
+        'Manager': 19900,      # $199.00
+        'FullService': 55000,  # $550.00
     }
-
-    # 2. Get the price based on this listing's tier (Default to 9900/Basic if missing)
-    fee_cents = tier_prices.get(listing.tier, 9900)
     
-    # 3. Calculate display amount for the template/database
-    fee_display = fee_cents / 100  
-    # -------------------------------------
+    # 3. Get the price based on the listing's tier (Default to 9900 if not found)
+    fee_cents = tier_prices.get(listing.tier, 9900)
+    fee_display = fee_cents / 100
 
-    # --- 1. HANDLE PAYMENT SUBMISSION (POST) ---
-    if request.method == "POST":
-        token = request.POST.get('stripeToken')
-
-        if not token:
-            messages.error(request, "Error processing card data. Please try again.")
-            return redirect('payment_view', listing_id=listing_id)
-
+    # 4. Create Stripe Checkout Session
+    if request.method == 'POST':
         try:
-            # A. Create the charge on Stripe
-            charge = stripe.Charge.create(
-                amount=fee_cents,
-                currency='aud',
-                description=f'{listing.get_tier_display()} Fee: {listing.title}', # specific description
-                source=token,
-                metadata={
-                    'listing_id': listing.id, 
-                    'user_email': request.user.email,
-                    'tier': listing.tier
-                }
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[
+                    {
+                        'price_data': {
+                            'currency': 'aud',
+                            'unit_amount': fee_cents,
+                            'product_data': {
+                                'name': f'Listing Fee: {listing.title} ({listing.tier})',
+                            },
+                        },
+                        'quantity': 1,
+                    },
+                ],
+                mode='payment',
+                success_url=request.build_absolute_uri(reverse('payment_success')) + '?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=request.build_absolute_uri(reverse('dashboard')),
             )
-
-            # --- B. SAVE THE RECEIPT ---
-            Payment.objects.create(
-                user=request.user,
-                listing=listing,
-                amount=fee_display,
-                transaction_id=charge.id
-            )
-            # ---------------------------
-
-            # C. Publish the Listing
-            listing.is_published = True
-            listing.save()
-
-            messages.success(request, f"Payment successful! '{listing.title}' is now published.")
-            return redirect('dashboard')
-
-        except stripe.error.CardError as e:
-            body = e.json_body
-            err = body.get('error', {})
-            messages.error(request, f"{err.get('message')}")
-        
-        except stripe.error.StripeError:
-            messages.error(request, "Something went wrong with the payment gateway. Please try again.")
-        
+            return redirect(checkout_session.url, code=303)
         except Exception as e:
-            messages.error(request, "A serious error occurred. Please contact support.")
+            return JsonResponse({'error': str(e)})
 
-    # --- 2. RENDER THE PAGE (GET or Error Fallback) ---
-    context = {
-        'listing': listing,
-        'fee': fee_display,
-        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLISHABLE_KEY 
-    }
-    return render(request, 'listings/payment.html', context)
+    return render(request, 'listings/payment.html', {
+        'listing': listing, 
+        'fee_display': fee_display,
+        'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
+    })

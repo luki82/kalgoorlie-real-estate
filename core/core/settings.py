@@ -19,6 +19,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'default-unsafe-key-for-dev')
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
+
 # SECURITY: False in production (Render), True locally.
 if os.environ.get('RENDER'):
     DEBUG = False
