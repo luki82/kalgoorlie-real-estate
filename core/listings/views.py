@@ -9,6 +9,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.conf import settings # Import settings to access keys
 from django.db.models import Q
+from django.http import JsonResponse
 # Import Models
 from .models import Listing
 from realtors.models import Realtor

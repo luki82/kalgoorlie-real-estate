@@ -2,7 +2,7 @@ from django.db.models import Q
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from listings.models import Listing
-
+from django.core.mail import send_mail
 
 from django.shortcuts import render, redirect  # <--- Added 'redirect' here
 from django.contrib import messages            # <--- For your success message
