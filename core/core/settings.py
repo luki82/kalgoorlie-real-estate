@@ -22,7 +22,7 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # SECURITY: False in production (Render), True locally.
 if os.environ.get('RENDER'):
-    DEBUG = False
+    DEBUG = True
 else:
     DEBUG = False
 
