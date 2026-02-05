@@ -12,5 +12,6 @@ urlpatterns = [
     path('investors/request/', views.investor_request_view, name='investor-request'),
     
     path('terms-and-conditions/', views.terms, name='terms'),
+    path('contact-us/', views.general_contact, name='general_contact'),
     path('contact/', views.contact, name='contact'),
 ]
