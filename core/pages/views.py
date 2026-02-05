@@ -95,6 +95,10 @@ def terms(request):
 
 # pages/views.py
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.core.mail import EmailMessage  # <--- vital change here
+
 def general_contact(request):
     if request.method == 'POST':
         # 1. Get data from the form
@@ -117,18 +121,18 @@ def general_contact(request):
         {message}
         """
 
-        # 3. Send the email (Reply-To is set to the visitor's email)
-        send_mail(
+        # 3. Send the email using EmailMessage (Fixes the crash)
+        email = EmailMessage(
             subject=f'General Inquiry: {subject}',
-            message=email_body,
+            body=email_body,
             from_email='admin@auestate.com.au',
-            recipient_list=['admin@auestate.com.au'],
-            fail_silently=False,
-            reply_to=[email]
+            to=['admin@auestate.com.au'],
+            reply_to=[email],  # <--- This works perfectly in EmailMessage
         )
+        email.send(fail_silently=False)
 
         messages.success(request, 'Thank you! Your message has been sent.')
-        return redirect('index') # Send them back to Home Page
+        return redirect('index')
 
     # 4. If they just click the link, show them the form page
     return render(request, 'pages/general_contact.html')
