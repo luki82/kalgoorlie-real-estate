@@ -30,7 +30,7 @@ else:
 ALLOWED_HOSTS = [
     'auestate.com.au', 
     'www.auestate.com.au', 
-    'your-render-app.onrender.com',
+    'auestate.onrender.com',
     'auestate.com',
     'www.auestate.com',
     '127.0.0.1',
