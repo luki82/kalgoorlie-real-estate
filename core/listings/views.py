@@ -168,7 +168,7 @@ def payment_view(request, listing_id):
                 ],
                 mode='payment',
                 success_url=request.build_absolute_uri(reverse('payment_success')) + '?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=request.build_absolute_uri(reverse('dashboard')),
+                cancel_url=request.build_absolute_uri(reverse('payment_failed')),
             )
             return redirect(checkout_session.url, code=303)
         except Exception as e:
