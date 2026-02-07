@@ -138,6 +138,15 @@ def payment_view(request, listing_id):
     # 1. Get the listing
     listing = get_object_or_404(Listing, pk=listing_id)
     
+    # ✅ FIX: Set the key INSIDE the function to ensure it loads correctly
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    # 2. Check if the key is actually missing (Debug Helper)
+    if not stripe.api_key:
+        return JsonResponse({'error': 'Server Error: Stripe Key not found in settings.'})
+    # 1. Get the listing
+    
+    
     # 2. Define the prices
     tier_prices = {
         'Standard': 9900,      # $99.00
