@@ -4,6 +4,8 @@ from .views import ListingCreateView, ListingUpdateView, ListingDeleteView
 from django.urls import path
 from . import views
 
+
+
 urlpatterns = [
     # --- 1. MAIN LISTINGS PAGE ---
     path('', views.index, name='listings'), 
@@ -22,9 +24,7 @@ urlpatterns = [
     # --- 5. CONTACT ---
     path('inquiry', views.inquiry, name='inquiry'),
 
-    # --- 6. PAYMENTS (UPDATED) ---
-    # We replaced the 3 old URLs (create_checkout, success, cancel) 
-    # with this SINGLE path that handles the form display AND processing.
+    # --- 6. PAYMENTS ---
     path('payment/<int:listing_id>/', views.payment_view, name='payment_view'),
     path('payment/success/', views.payment_success, name='payment_success'),
     path('payment/failed/', views.payment_failed, name='payment_failed'),

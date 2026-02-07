@@ -138,14 +138,14 @@ def payment_view(request, listing_id):
     # 1. Get the listing
     listing = get_object_or_404(Listing, pk=listing_id)
     
-    # 2. Define the prices (Indentation MUST be 4 spaces inside the function)
+    # 2. Define the prices
     tier_prices = {
         'Standard': 9900,      # $99.00
         'Manager': 19900,      # $199.00
         'FullService': 55000,  # $550.00
     }
     
-    # 3. Get the price based on the listing's tier (Default to 9900 if not found)
+    # 3. Get the price based on the listing's tier
     fee_cents = tier_prices.get(listing.tier, 9900)
     fee_display = fee_cents / 100
 
@@ -167,8 +167,9 @@ def payment_view(request, listing_id):
                     },
                 ],
                 mode='payment',
-                success_url=request.build_absolute_uri(reverse('listings:payment_success')) + '?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=request.build_absolute_uri(reverse('listings:payment_success')),
+                # ✅ FIX: Removed 'listings:' prefix here
+                success_url=request.build_absolute_uri(reverse('payment_success')) + '?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=request.build_absolute_uri(reverse('payment_failed')),
             )
             return redirect(checkout_session.url, code=303)
         except Exception as e:
@@ -179,3 +180,13 @@ def payment_view(request, listing_id):
         'fee_display': fee_display,
         'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
     })
+
+# --- Success/Fail Views ---
+
+def payment_success(request):
+    # This page shows when payment is done
+    return render(request, 'listings/payment_success.html')
+
+def payment_failed(request):
+    # This page shows when payment is cancelled
+    return render(request, 'listings/payment_failed.html')
