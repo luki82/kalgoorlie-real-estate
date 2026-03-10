@@ -25,7 +25,7 @@ if os.environ.get('LIVE_MODE'):
     DEBUG = True
     print("🔴 DEBUG MODE IS OFF (Live Site)")
 else:
-    DEBUG = False
+    DEBUG = True
     print("🟢 DEBUG MODE IS ON (Local Computer)")
 
 ALLOWED_HOSTS = [
