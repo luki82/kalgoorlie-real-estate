@@ -1,123 +1,76 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 
 {% block content %}
+<div class="bg-dark text-white py-5">
+    <div class="container text-center py-4">
+        <h1 class="display-5 fw-bold">Professional Services</h1>
+        <p class="lead text-white-50 mx-auto" style="max-width: 700px;">
+            From precise structural drafting to high-performance web development. Delivering engineering-grade quality at accessible rates.
+        </p>
+    </div>
+</div>
+
 <div class="container py-5">
-    <h1 class="text-center mb-5">Our Services</h1>
     
-    <div class="row mb-5">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-danger">Marketing Floor Plans</h3>
-                    <p class="card-text">We convert rough sketches or old blueprints into clean, professional 2D marketing floor plans ready for listings.</p>
-                    <ul>
-                        <li>On-site Laser Measurements</li>
-                        <li>AutoCAD Accuracy</li>
-                        <li>Fast Turnaround</li>
-                    </ul>
+    <div class="row align-items-center mb-5 pb-5 border-bottom">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="bg-light p-5 rounded-4 text-center h-100 border border-2 border-danger shadow-sm">
+                <i class="fas fa-pencil-ruler fa-5x text-danger mb-4"></i>
+                <div class="mt-3">
+                    <span class="badge bg-dark px-3 py-2 fs-6">9+ Years Experience</span>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-danger">Agents Support</h3>
-                    <p class="card-text">Acting as your 'boots on the ground.' We conduct site visits for busy agents and interstate investors.</p>
-                    <ul>
-                        <li>Site Condition Reports</li>
-                        <li>Boundary Checks</li>
-                        <li>Open House Assistance</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-danger">Property Photography</h3>
-                    <p class="card-text">High-quality interior and exterior photos to make your listing stand out on major real estate portals.</p>
-                    <ul>
-                        <li>Bright & Clear Editing</li>
-                        <li>24h Delivery</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="col-lg-6 ps-lg-5">
+            <h6 class="text-danger fw-bold text-uppercase">Architecture & Engineering</h6>
+            <h2 class="fw-bold mb-3">Architectural Drafting & Compliance</h2>
+            <p class="text-muted mb-3">
+                With a <strong>BEng (Civil) (Hons)</strong> background and over <strong>9 years of design drafting experience</strong> using Autodesk software, we provide a level of precision that standard drafting services simply cannot match.
+            </p>
+            <p class="text-muted mb-4">
+                Our design and drafting workflow is strictly governed by <strong>ANZ Building and Construction Standards</strong>. We love a challenge—big or small—and we are dedicated to getting your architectural work done right and ensuring full compliance for council approval.
+            </p>
+            <ul class="list-unstyled text-muted mb-4">
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> ANZ Standards & NCC Compliance</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> 9+ Years of Autodesk Software Expertise</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Civil Engineering (Honours) Oversight</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Residential & Commercial DA Packages</li>
+            </ul>
+            <a href="{% url 'general_contact' %}?subject=Drafting Quote" class="btn btn-dark px-4 py-2">Request Drafting Quote</a>
         </div>
     </div>
 
-    <hr class="my-5">
-
-    <div class="text-center mb-5">
-        <h2>Listing Packages</h2>
-        <p class="lead text-muted">Choose the plan that fits your property needs.</p>
-    </div>
-
-    <div class="row align-items-center">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-header bg-light text-center py-4">
-                    <h4 class="my-0 font-weight-normal">Standard Listing</h4>
-                    <span class="badge bg-secondary mb-2">DIY</span>
-                </div>
-                <div class="card-body text-center">
-                    <h1 class="card-title pricing-card-title">$99<small class="text-muted">/ one-time</small></h1>
-                    <p class="text-muted">For Homeowners & Private Sellers</p>
-                    <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 250px;">
-                        <li><i class="bi bi-check text-danger"></i> 1 Property Listing</li>
-                        <li><i class="bi bi-check text-danger"></i> Online until sold</li>
-                        <li><i class="bi bi-check text-danger"></i> You upload text & photos</li>
-                        <li><i class="bi bi-check text-danger"></i> Standard inquiry form</li>
-                    </ul>
-                    
-                    <a href="{% url 'create_listing' %}" class="btn btn-lg btn-block btn-outline-danger w-100">Get Started</a>
-                </div>
+    <div class="row align-items-center mb-5 pb-3">
+        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+            <div class="bg-dark p-5 rounded-4 text-center h-100 shadow-sm position-relative overflow-hidden d-flex flex-column justify-content-center align-items-center">
+                <i class="fas fa-code fa-5x text-white opacity-50 mb-3"></i>
+                <h4 class="text-white fw-bold mb-0 mt-2">Powered by Python</h4>
             </div>
         </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow border-danger">
-                <div class="card-header bg-danger text-white text-center py-4">
-                    <h4 class="my-0 font-weight-normal">Manager Subscription</h4>
-                    <span class="badge bg-white text-danger mb-2">High Value</span>
+        <div class="col-lg-6 order-lg-1 pe-lg-5">
+            <h6 class="text-danger fw-bold text-uppercase">Digital Infrastructure</h6>
+            <h2 class="fw-bold mb-3">Affordable Web Development</h2>
+            <p class="text-muted mb-4">
+                Do you like the speed, design, and functionality of this website? We can build one exactly like it for you. We engineer custom web applications using Python and Django—the same powerful framework used by Instagram and Pinterest—for a fraction of what a big agency charges.
+            </p>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                    <div class="p-3 bg-light rounded border-start border-danger border-4">
+                        <h6 class="fw-bold mb-1">Budget-Friendly</h6>
+                        <small class="text-muted">High-end tech without the high-end agency markup.</small>
+                    </div>
                 </div>
-                <div class="card-body text-center">
-                    <h1 class="card-title pricing-card-title">$199<small class="text-muted">/ month</small></h1>
-                    <p class="text-muted">For Parks, Motels & Camps</p>
-                    <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 250px;">
-                        <li><i class="bi bi-check-circle-fill text-danger"></i> <strong>Complex Dashboard</strong></li>
-                        <li><i class="bi bi-check-circle-fill text-danger"></i> Manage sub-units</li>
-                        <li><i class="bi bi-check-circle-fill text-danger"></i> Vacancy Toggles</li>
-                        <li><i class="bi bi-check-circle-fill text-danger"></i> Priority Placement</li>
-                    </ul>
-                    
-                    <a href="{% url 'create-realtor' %}" class="btn btn-lg btn-block btn-danger w-100">Subscribe Now</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-header bg-light text-center py-4">
-                    <h4 class="my-0 font-weight-normal">Full Service</h4>
-                    <span class="badge bg-dark mb-2">We Do It All</span>
-                </div>
-                <div class="card-body text-center">
-                    <h1 class="card-title pricing-card-title">$550<small class="text-muted">/ start</small></h1>
-                    <p class="text-muted">For Investors & Busy Agents</p>
-                    <ul class="list-unstyled mt-3 mb-4 text-start mx-auto" style="max-width: 250px;">
-                        <li><i class="bi bi-check text-danger"></i> <strong>Includes Listing Fee</strong></li>
-                        <li><i class="bi bi-check text-danger"></i> On-site Visit (Kalgoorlie)</li>
-                        <li><i class="bi bi-check text-danger"></i> Pro Photography</li>
-                        <li><i class="bi bi-check text-danger"></i> 2D Floor Plan Drafted</li>
-                        <li><i class="bi bi-check text-danger"></i> We Write & Upload</li>
-                    </ul>
-                    
-                    <a href="{% url 'general_contact' %}" class="btn btn-lg btn-block btn-outline-dark w-100">Contact Us</a>
+                <div class="col-sm-6">
+                    <div class="p-3 bg-light rounded border-start border-danger border-4">
+                        <h6 class="fw-bold mb-1">E-Commerce Ready</h6>
+                        <small class="text-muted">Sell your own digital or physical products online.</small>
+                    </div>
                 </div>
             </div>
+            <a href="{% url 'general_contact' %}?subject=Website Build Inquiry" class="btn btn-danger px-4 py-2">Get a Website Estimate</a>
         </div>
     </div>
+
 </div>
 {% endblock %}

@@ -1,18 +1,5 @@
 """
 URL configuration for core project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path, include
@@ -21,9 +8,9 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 # --- 1. ADMIN CONFIGURATION (MUST BE OUTSIDE THE LIST) ---
-admin.site.site_header = "AUestate Staff Portal"
+admin.site.site_header = "AUestate Drafting Portal"
 admin.site.site_title = "AUestate Admin"
-admin.site.index_title = "Welcome to the Realtor Dashboard"
+admin.site.index_title = "Welcome to the Digital Store Dashboard"
 
 # --- 2. URL PATTERNS ---
 urlpatterns = [
@@ -31,10 +18,9 @@ urlpatterns = [
     path('staff-portal-secure/', admin.site.urls),
 
     # Your Apps
-    path('', include('pages.urls')),
-    path('listings/', include('listings.urls')),
+    path('', include('pages.urls')), # Keeps your existing homepage/about pages active
+    path('store/', include('store.urls')), # Routes traffic to your new AutoCAD products
     path('accounts/', include('accounts.urls')),
-    #path('payments/', include('payments.urls')),
     
     # Password Reset Paths
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="registration/password_reset.html"), name="reset_password"),

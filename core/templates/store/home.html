@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-dark text-white py-4 border-top border-danger border-3">
+    <div class="container">
+        <h1 class="fw-bold">AUestate CAD Library</h1>
+        <p class="text-white-50 mb-0">Professional drafting assets engineered for Australian standards.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h4 class="fw-bold mb-0">All Assets</h4>
+        <span class="text-muted small">Showing available digital downloads</span>
+    </div>
+
+    <div class="row g-4">
+        {% if products %}
+            {% for product in products %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                        
+                        <div class="bg-light text-center py-5 border-bottom">
+                            <i class="fas fa-file-export fa-4x text-danger opacity-75"></i>
+                        </div>
+                        
+                        <div class="card-body p-4">
+                            <span class="badge bg-danger text-uppercase tracking-wide mb-2">
+                                {{ product.category.title }}
+                            </span>
+                            
+                            <h5 class="card-title fw-bold mb-2">{{ product.title }}</h5>
+                            
+                            <p class="card-text text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                {{ product.description|truncatewords:15 }}
+                            </p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="fs-5 fw-bold text-dark">${{ product.price }}</span>
+                                <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-outline-danger btn-sm fw-bold">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                <h3 class="text-muted">No CAD assets available right now.</h3>
+                <p class="text-muted">Log into your admin panel to add your first Dynamic Block or Template!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
