@@ -59,6 +59,7 @@ def payment_success(request):
     We verify the session and unlock the product in the user's dashboard.
     """
     session_id = request.GET.get('session_id')
+    product = None # Fallback in case session fails
     
     if session_id:
         # Retrieve the session details directly from Stripe for security
@@ -75,7 +76,7 @@ def payment_success(request):
             defaults={
                 'amount': product.price,
                 # Store the Stripe transaction ID for your accounting records
-                'stripe_charge_id': session.payment_intent if session.payment_intent else session.id 
+                'transaction_id': session.payment_intent if session.payment_intent else session.id 
             }
         )
         
