@@ -15,19 +15,23 @@
     <div class="row g-5">
         
         <div class="col-lg-6">
-            {% if product.video_preview %}
-                <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
-                    <video class="w-100 d-block" controls autoplay loop muted playsinline {% if product.preview_image %}poster="{{ product.preview_image.url }}"{% endif %}>
-                        <source src="{{ product.video_preview.url }}">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
+            
+            {% if product.video_preview or product.preview_image %}
                 
-            {% elif product.preview_image %}
-                <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
-                    <img src="{{ product.preview_image.url }}" alt="{{ product.title }}" class="img-fluid w-100">
-                </div>
-                
+                {% if product.video_preview %}
+                    <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white mb-4">
+                        <video class="w-100 d-block" controls autoplay loop muted playsinline>
+                            <source src="{{ product.video_preview.url }}">
+                        </video>
+                    </div>
+                {% endif %}
+
+                {% if product.preview_image %}
+                    <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
+                        <img src="{{ product.preview_image.url }}" alt="{{ product.title }}" class="img-fluid w-100">
+                    </div>
+                {% endif %}
+
             {% else %}
                 <div class="bg-light rounded-4 d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="min-height: 450px;">
                     <div class="text-center">
@@ -36,6 +40,7 @@
                     </div>
                 </div>
             {% endif %}
+
         </div>
 
         <div class="col-lg-6">
