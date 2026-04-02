@@ -23,17 +23,15 @@
                     <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
                         
                         <a href="{% url 'store:product_detail' product.slug %}" class="d-block bg-light text-center border-bottom overflow-hidden text-decoration-none" style="height: 250px;">
-                            {% if product.video_preview %}
-                                <video class="w-100 h-100 object-fit-cover" autoplay loop muted playsinline>
-                                    <source src="{{ product.video_preview.url }}">
-                                </video>
-                            {% elif product.preview_image %}
+                            
+                            {% if product.preview_image %}
                                 <img src="{{ product.preview_image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ product.title }}">
                             {% else %}
                                 <div class="d-flex align-items-center justify-content-center h-100">
                                     <i class="fas fa-file-export fa-4x text-danger opacity-75"></i>
                                 </div>
                             {% endif %}
+                            
                         </a>
                         
                         <div class="card-body p-4">
