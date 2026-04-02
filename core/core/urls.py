@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include('pages.urls')), # Keeps your existing homepage/about pages active
     path('store/', include('store.urls')), # Routes traffic to your new AutoCAD products
     path('accounts/', include('accounts.urls')),
+    path('payments/', include('payments.urls')),
     
     # Password Reset Paths
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="registration/password_reset.html"), name="reset_password"),
