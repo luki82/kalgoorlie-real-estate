@@ -17,8 +17,8 @@
         <div class="col-lg-6">
             {% if product.video_preview %}
                 <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
-                    <video class="w-100 d-block" controls autoplay loop muted playsinline>
-                        <source src="{{ product.video_preview.url }}" type="video/mp4">
+                    <video class="w-100 d-block" controls autoplay loop muted playsinline {% if product.preview_image %}poster="{{ product.preview_image.url }}"{% endif %}>
+                        <source src="{{ product.video_preview.url }}">
                         Your browser does not support the video tag.
                     </video>
                 </div>
