@@ -13,13 +13,29 @@
     </nav>
 
     <div class="row g-5">
+        
         <div class="col-lg-6">
-            <div class="bg-light rounded-4 d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="min-height: 450px;">
-                <div class="text-center">
-                    <i class="fas fa-file-export fa-8x text-danger opacity-50 mb-3"></i>
-                    <p class="text-muted small text-uppercase tracking-widest fw-bold">.DWG Asset</p>
+            {% if product.video_preview %}
+                <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
+                    <video class="w-100 d-block" controls autoplay loop muted playsinline>
+                        <source src="{{ product.video_preview.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
-            </div>
+                
+            {% elif product.preview_image %}
+                <div class="rounded-4 overflow-hidden shadow-sm border border-2 border-white">
+                    <img src="{{ product.preview_image.url }}" alt="{{ product.title }}" class="img-fluid w-100">
+                </div>
+                
+            {% else %}
+                <div class="bg-light rounded-4 d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="min-height: 450px;">
+                    <div class="text-center">
+                        <i class="fas fa-file-export fa-8x text-danger opacity-50 mb-3"></i>
+                        <p class="text-muted small text-uppercase tracking-widest fw-bold">.DWG Asset</p>
+                    </div>
+                </div>
+            {% endif %}
         </div>
 
         <div class="col-lg-6">
