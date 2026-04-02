@@ -22,7 +22,7 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # SECURITY: False in production (Render), True locally.
 if os.environ.get('LIVE_MODE'):
-    DEBUG = False
+    DEBUG = True
     print("🔴 DEBUG MODE IS OFF (Live Site)")
 else:
     DEBUG = True

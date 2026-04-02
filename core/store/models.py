@@ -21,7 +21,10 @@ class Product(models.Model):
     # This is the image people see on the website
     preview_image = models.ImageField(upload_to='product_previews/')
     
-    # This is the actual AutoCAD .dwg or PDF file they are buying
+    # NEW: The video preview loop (MP4/GIF)
+    video_preview = models.FileField(upload_to='product_videos/', null=True, blank=True)
+    
+    # This is the actual AutoCAD .dwg, .zip, or PDF file they are buying
     digital_file = models.FileField(upload_to='digital_products/')
     
     is_active = models.BooleanField(default=True)
@@ -29,4 +32,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
-# Create your models here.
