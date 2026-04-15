@@ -30,13 +30,13 @@
                             </div>
                         {% endif %}
 
-                        <a href="{% url 'store:product_detail' product.slug %}" class="d-block bg-light text-center border-bottom overflow-hidden text-decoration-none position-relative" style="height: 250px;">
+                        <div class="d-block bg-light text-center border-bottom overflow-hidden position-relative" style="height: 250px;">
                             
                             {% if product.preview_file %}
                                 {% if product.is_pdf %}
-                                    <embed src="{{ product.preview_file.url }}" width="100%" height="250px" type="application/pdf">
+                                    <embed src="{{ product.preview_file.url }}#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="250px" type="application/pdf" style="pointer-events: none;">
                                 {% else %}
-                                    <img src="{{ product.preview_file.url }}" alt="Property Floor Plan" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <img src="{{ product.preview_file.url }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                 {% endif %}
                             {% else %}
                                 <div class="d-flex align-items-center justify-content-center h-100">
@@ -44,7 +44,7 @@
                                 </div>
                             {% endif %}
                             
-                        </a>
+                        </div>
                         
                         <div class="card-body p-4">
                             <span class="badge bg-danger text-uppercase tracking-wide mb-2">
@@ -59,7 +59,8 @@
                             
                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                 <span class="fs-5 fw-bold text-dark">${{ product.price }}</span>
-                                <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-outline-danger btn-sm fw-bold">
+                                
+                                <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-outline-danger btn-sm fw-bold stretched-link">
                                     View Details
                                 </a>
                             </div>
