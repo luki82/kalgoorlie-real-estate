@@ -20,12 +20,24 @@
         {% if products %}
             {% for product in products %}
                 <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                    <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden position-relative">
                         
-                        <a href="{% url 'store:product_detail' product.slug %}" class="d-block bg-light text-center border-bottom overflow-hidden text-decoration-none" style="height: 250px;">
+                        {% if product.gallery_files.count > 0 %}
+                            <div class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
+                                <span class="badge bg-dark bg-opacity-75 shadow-sm border border-secondary">
+                                    <i class="fas fa-layer-group me-1"></i> +{{ product.gallery_files.count }} Drawings
+                                </span>
+                            </div>
+                        {% endif %}
+
+                        <a href="{% url 'store:product_detail' product.slug %}" class="d-block bg-light text-center border-bottom overflow-hidden text-decoration-none position-relative" style="height: 250px;">
                             
-                            {% if product.preview_image %}
-                                <img src="{{ product.preview_image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ product.title }}">
+                            {% if product.preview_file %}
+                                {% if product.is_pdf %}
+                                    <embed src="{{ product.preview_file.url }}" width="100%" height="250px" type="application/pdf">
+                                {% else %}
+                                    <img src="{{ product.preview_file.url }}" alt="Property Floor Plan" style="width: 100%; height: 100%; object-fit: cover;">
+                                {% endif %}
                             {% else %}
                                 <div class="d-flex align-items-center justify-content-center h-100">
                                     <i class="fas fa-file-export fa-4x text-danger opacity-75"></i>
@@ -36,7 +48,7 @@
                         
                         <div class="card-body p-4">
                             <span class="badge bg-danger text-uppercase tracking-wide mb-2">
-                                {{ product.category.title }}
+                                {{ product.category.name }}
                             </span>
                             
                             <h5 class="card-title fw-bold mb-2">{{ product.title }}</h5>
