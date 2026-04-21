@@ -7,17 +7,15 @@ from django.core.mail import EmailMessage
 from store.models import Product, Category
 
 def index(request):
-    # Fetch the latest 3 active products for each category to display on the homepage
-    dynamic_blocks = Product.objects.filter(category__slug='dynamic-blocks', is_active=True).order_by('-created_at')[:3]
-    templates = Product.objects.filter(category__slug='council-templates', is_active=True).order_by('-created_at')[:3]
-    tutorials = Product.objects.filter(category__slug='tutorials', is_active=True).order_by('-created_at')[:3]
+    # Fetch the newest active product (your 1-Bedroom Apartment)
+    featured_product = Product.objects.filter(is_active=True).order_by('-created_at').first()
 
-    context = {
-        'dynamic_blocks': dynamic_blocks,
-        'templates': templates,
-        'tutorials': tutorials
-    }
-    return render(request, 'pages/index.html', context)
+    if featured_product:
+        # Skip the old index page and load the product detail template immediately!
+        return render(request, 'store/product_detail.html', {'product': featured_product})
+    else:
+        # Fallback just in case there are no products in the database yet
+        return render(request, 'pages/index.html')
 
 def search(request):
     # Start with all active products
