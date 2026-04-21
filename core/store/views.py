@@ -38,4 +38,4 @@ def product_detail(request, slug):
 
     }
 
-    return render(request, 'store/product_detail.html', context) is this the home lending page
+    return render(request, 'store/product_detail.html', context)
