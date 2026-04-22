@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
 
+
+
 urlpatterns = [
-    # Main Navigation
+    # Main Navigationgit
  
     path('about/', views.about, name='about'),
     path('services/', views.services, name='services'),

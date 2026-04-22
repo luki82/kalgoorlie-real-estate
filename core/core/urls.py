@@ -19,8 +19,7 @@ urlpatterns = [
 
     # Your Apps
     path('', include('store.urls')), # Routes traffic to your new AutoCAD products
-    path('', include('pages.urls')), # Keeps your existing homepage/about pages active
-    
+    path('pages/', include('pages.urls')), # Keeps your existing homepage/about pages active
     path('accounts/', include('accounts.urls')),
     path('payments/', include('payments.urls')),
     
