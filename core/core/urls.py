@@ -18,8 +18,9 @@ urlpatterns = [
     path('staff-portal-secure/', admin.site.urls),
 
     # Your Apps
+    path('', include('store.urls')), # Routes traffic to your new AutoCAD products
     path('', include('pages.urls')), # Keeps your existing homepage/about pages active
-    path('store/', include('store.urls')), # Routes traffic to your new AutoCAD products
+    
     path('accounts/', include('accounts.urls')),
     path('payments/', include('payments.urls')),
     

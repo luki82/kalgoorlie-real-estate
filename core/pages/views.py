@@ -6,16 +6,7 @@ from django.core.mail import EmailMessage
 # Import your new digital products instead of listings
 from store.models import Product, Category
 
-def index(request):
-    # Fetch the newest active product (your 1-Bedroom Apartment)
-    featured_product = Product.objects.filter(is_active=True).order_by('-created_at').first()
 
-    if featured_product:
-        # Skip the old index page and load the product detail template immediately!
-        return render(request, 'store/product_detail.html', {'product': featured_product})
-    else:
-        # Fallback just in case there are no products in the database yet
-        return render(request, 'pages/index.html')
 
 def search(request):
     # Start with all active products
