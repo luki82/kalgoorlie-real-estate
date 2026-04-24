@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 
-app_name = 'store' # This helps Django identify these specific URLs
+ # This helps Django identify these specific URLs
+app_name = 'store'
 
 urlpatterns = [
     # This points to the main store page displaying all your templates

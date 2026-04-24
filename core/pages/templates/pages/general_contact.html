@@ -14,6 +14,11 @@
             <form action="{% url 'general_contact' %}" method="POST">
               {% csrf_token %}
               
+              <div style="display: none;">
+                  <label for="website_url">Leave this field blank if you are human:</label>
+                  <input type="text" name="website_url" id="website_url" autocomplete="off">
+              </div>
+              
               <div class="form-group mb-3">
                 <label>Full Name</label>
                 <input type="text" name="full_name" class="form-control" required>
