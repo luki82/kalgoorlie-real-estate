@@ -1,0 +1,54 @@
+[
+  {
+    "slug": "01_kalgoorlie_family_home",
+    "title": "Kalgoorlie family home",
+    "description": "",
+    "signature": "413748-1781351323",
+    "pages": [
+      {
+        "files": [
+          [
+            "p01-1200.webp",
+            1200
+          ],
+          [
+            "p01-2400.webp",
+            2400
+          ],
+          [
+            "p01-full.webp",
+            4963
+          ]
+        ],
+        "width": 4963,
+        "height": 3509
+      }
+    ]
+  },
+  {
+    "slug": "02_kalgoorlie_family_home",
+    "title": "Kalgoorlie family home",
+    "description": "",
+    "signature": "2890083-1784608423",
+    "pages": [
+      {
+        "files": [
+          [
+            "p01-1200.webp",
+            1200
+          ],
+          [
+            "p01-2400.webp",
+            2400
+          ],
+          [
+            "p01-full.webp",
+            4963
+          ]
+        ],
+        "width": 4963,
+        "height": 3509
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="bg-dark text-white py-5 border-top border-danger border-3">
+    <div class="container py-3">
+        <h1 class="fw-bold mb-3">Building plans drafted for council approval</h1>
+        <p class="lead text-white-50 mb-4" style="max-width: 680px;">
+            Residential and commercial drafting in Kalgoorlie and the Goldfields.
+            I draw the plans council needs, and make the changes the planner asks for until they're approved.
+        </p>
+        <a href="{% url 'general_contact' %}?subject=Drafting quote" class="btn btn-danger btn-lg fw-bold px-4 me-2 mb-2">Get a free quote</a>
+        <a href="{% url 'portfolio' %}" class="btn btn-outline-light btn-lg px-4 mb-2">See my work</a>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <i class="fas fa-home fa-2x text-danger mb-3"></i>
+            <h2 class="h5 fw-bold">Homes &amp; extensions</h2>
+            <p class="text-muted small mb-0">New houses, additions, granny flats, sheds and patios.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fas fa-building fa-2x text-danger mb-3"></i>
+            <h2 class="h5 fw-bold">Commercial buildings</h2>
+            <p class="text-muted small mb-0">Small to mid-size commercial and industrial projects.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="fas fa-stamp fa-2x text-danger mb-3"></i>
+            <h2 class="h5 fw-bold">Ready for council</h2>
+            <p class="text-muted small mb-0">Site plan, floor plans, elevations and sections, ready to lodge.</p>
+        </div>
+    </div>
+</div>
+
+{% if latest %}
+<div class="container-xxl pb-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-3 gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">Recent work</h2>
+            <p class="text-muted mb-0">{{ latest.title }}</p>
+        </div>
+        <a href="{% url 'portfolio' %}" class="btn btn-outline-danger fw-bold">See all drawings</a>
+    </div>
+    {% with project=latest page=latest.pages.0 %}
+        {% include 'pages/_sheet.html' with eager=True %}
+    {% endwith %}
+</div>
+{% endif %}
+{% endblock %}

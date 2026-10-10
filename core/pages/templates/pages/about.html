@@ -2,93 +2,53 @@
 {% load static %}
 
 {% block content %}
-
 <div class="bg-light py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Professional Expertise</h2>
-            <p class="text-muted">Our services are backed by formal education and deep technical software knowledge.</p>
+            <h1 class="fw-bold">About</h1>
+            <p class="text-muted mx-auto" style="max-width: 640px;">
+                I'm a Kalgoorlie-based drafter with a civil engineering degree. I draw building plans for local homeowners,
+                builders and businesses, and get them through council approval.
+            </p>
         </div>
 
         <div class="row g-4 justify-content-center">
-            
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm p-4 text-center">
-                    <div class="text-danger mb-3">
-                        <i class="fas fa-university fa-3x"></i>
-                    </div>
-                    <h3 class="h5 fw-bold text-dark">Civil Engineering</h3>
-                    <p class="small text-muted mb-0">
-                        Holding a Bachelor of Engineering (Civil) Honours. This ensures all drafting works are grounded in an understanding of structural load paths, material tolerances, and site grading.
-                    </p>
+                    <div class="text-danger mb-3"><i class="fas fa-university fa-3x"></i></div>
+                    <h2 class="h5 fw-bold text-dark">Civil engineering degree</h2>
+                    <p class="small text-muted mb-0">Bachelor of Civil Engineering from Edith Cowan University.</p>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm p-4 text-center">
-                    <div class="text-danger mb-3">
-                        <i class="fas fa-certificate fa-3x"></i>
-                    </div>
-                    <h3 class="h5 fw-bold text-dark">Certified Drafting</h3>
-                    <p class="small text-muted mb-0">
-                        Holding a formal Diploma in Residential and Commercial Drafting. We format layouts, cross-sections, and elevations to exact Australian building code standards.
-                    </p>
+                    <div class="text-danger mb-3"><i class="fas fa-drafting-compass fa-3x"></i></div>
+                    <h2 class="h5 fw-bold text-dark">AutoCAD drafting</h2>
+                    <p class="small text-muted mb-0">Experienced drafting residential and mid-size commercial buildings.</p>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm p-4 text-center">
-                    <div class="text-danger mb-3">
-                        <i class="fas fa-laptop-code fa-3x"></i>
-                    </div>
-                    <h3 class="h5 fw-bold text-dark">AutoCAD & Python</h3>
-                    <p class="small text-muted mb-0">
-                        Advanced proficiency in AutoCAD parameters and Python web frameworks. We bridge the gap between architectural design and modern software engineering.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="container py-5 my-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="card bg-dark text-white border-0 shadow-lg overflow-hidden">
-                <div class="row g-0 align-items-center">
-                    <div class="col-md-8 p-5">
-                        <h6 class="text-danger fw-bold text-uppercase tracking-wide mb-2">Web Development Services</h6>
-                        <h2 class="fw-bold mb-3">Like this website? It could be yours.</h2>
-                        <p class="text-white-50 mb-4">
-                            This entire platform was custom-engineered from scratch. If you are a local business, contractor, or freelancer needing a high-performance, professional website without the massive agency price tag, we can build it for a highly affordable budget.
-                        </p>
-                        <a href="{% url 'services' %}" class="btn btn-danger px-4 py-2 fw-bold shadow">See Web Packages</a>
-                    </div>
-                    <div class="col-md-4 text-center p-4 bg-danger h-100 d-flex flex-column justify-content-center">
-                        <i class="fab fa-python fa-4x mb-3 text-white"></i>
-                        <h4 class="fw-bold mb-0">Powered by Django</h4>
-                    </div>
+                    <div class="text-danger mb-3"><i class="fas fa-map-marker-alt fa-3x"></i></div>
+                    <h2 class="h5 fw-bold text-dark">Local council experience</h2>
+                    <p class="small text-muted mb-0">I've taken my own building plans through the council approval process, including the planner's change requests.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container pb-5 mb-5">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card border-danger border-2 shadow-sm">
                 <div class="card-body p-5 text-center">
-                    <h3 class="fw-bold mb-3">Need Custom Drafting Solutions?</h3>
-                    <p class="text-muted mb-4">
-                        Accepting new clients for custom residential site plans and DA packages in the Goldfields region.
-                    </p>
-                    <a href="{% url 'general_contact' %}" class="btn btn-outline-danger btn-lg px-5 py-2 fw-bold shadow-sm">Get a Drafting Quote</a>
+                    <h2 class="h3 fw-bold mb-3">Need plans for council?</h2>
+                    <p class="text-muted mb-4">Taking on new projects in Kalgoorlie-Boulder and across the Goldfields.</p>
+                    <a href="{% url 'general_contact' %}?subject=Drafting quote" class="btn btn-danger btn-lg px-5 fw-bold">Get a free quote</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

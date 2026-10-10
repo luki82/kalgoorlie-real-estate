@@ -6,8 +6,8 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card shadow">
-          <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Contact Us</h4>
+          <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Get a drafting quote</h4>
           </div>
           <div class="card-body">
             
@@ -31,21 +31,21 @@
                 </div>
                 <div class="col-md-6">
                   <label>Phone</label>
-                  <input type="text" name="phone" class="form-control">
+                  <input type="tel" name="phone" class="form-control">
                 </div>
               </div>
 
               <div class="form-group mb-3">
                 <label>Subject</label>
-                <input type="text" name="subject" class="form-control" required>
+                <input type="text" name="subject" class="form-control" value="{{ request.GET.subject|default:'Drafting quote' }}" required>
               </div>
 
               <div class="form-group mb-3">
                 <label>Message</label>
-                <textarea name="message" class="form-control" rows="5" required></textarea>
+                <textarea name="message" class="form-control" rows="5" required placeholder="Property address, what you want to build (e.g. new house, extension, shed), and any sketches or ideas you already have."></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+              <button type="submit" class="btn btn-danger fw-bold w-100">Send quote request</button>
             </form>
 
           </div>

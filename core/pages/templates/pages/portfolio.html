@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Portfolio | AUestate Drafting – Kalgoorlie &amp; Goldfields{% endblock %}
+
+{% block content %}
+<div class="bg-dark text-white py-5">
+    <div class="container text-center py-3">
+        <h1 class="display-5 fw-bold">Portfolio</h1>
+        <p class="lead text-white-50 mx-auto mb-0" style="max-width: 680px;">
+            Floor plans, elevations and details from recent projects. Tap any drawing to see it full size.
+        </p>
+    </div>
+</div>
+
+<div class="container-xxl py-5">
+    {% for project in projects %}
+        <section class="mb-5 pb-4 {% if not forloop.last %}border-bottom{% endif %}" id="{{ project.slug }}">
+            <h2 class="fw-bold mb-2">{{ project.title }}</h2>
+            {% if project.description %}<p class="text-muted mb-4" style="max-width: 760px;">{{ project.description|linebreaksbr }}</p>{% endif %}
+            {% for page in project.pages %}
+                {% include 'pages/_sheet.html' %}
+            {% endfor %}
+        </section>
+    {% empty %}
+        <div class="text-center py-5">
+            <i class="fas fa-drafting-compass fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Drawings coming soon.</p>
+        </div>
+    {% endfor %}
+
+    <div class="text-center pt-3">
+        <h2 class="h4 fw-bold mb-3">Want plans like these for your project?</h2>
+        <a href="{% url 'general_contact' %}?subject=Drafting quote" class="btn btn-danger btn-lg fw-bold px-5">Get a free quote</a>
+    </div>
+</div>
+{% endblock %}

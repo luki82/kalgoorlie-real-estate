@@ -1,0 +1,15 @@
+{% comment %}One drawing sheet, full width. Tap/click opens the full-resolution image (pinch-zoom on phones).{% endcomment %}
+<figure class="sheet mb-4">
+    <a href="{{ page.full }}" target="_blank" rel="noopener" title="Open full-size drawing">
+        <img src="{{ page.src }}" srcset="{{ page.srcset }}" sizes="(min-width: 1400px) 1320px, 100vw"
+             width="{{ page.width }}" height="{{ page.height }}"
+             alt="{{ project.title }} – sheet {{ page.number }} of {{ project.page_count }}"
+             {% if not eager %}loading="lazy"{% endif %} decoding="async">
+    </a>
+    <figcaption class="d-flex justify-content-between small text-muted px-1 pt-2">
+        <span>Sheet {{ page.number }} of {{ project.page_count }}</span>
+        <a href="{{ page.full }}" target="_blank" rel="noopener" class="text-danger fw-bold text-decoration-none">
+            <i class="fas fa-search-plus me-1"></i>View full size
+        </a>
+    </figcaption>
+</figure>

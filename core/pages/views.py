@@ -1,40 +1,17 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q
 from django.contrib import messages
 from django.core.mail import EmailMessage
 
-from store.models import Product, Category
+from .portfolio import load_projects
 
-def search(request):
-    # Start with all active products
-    products = Product.objects.filter(is_active=True).order_by('-created_at')
 
-    # Filter by Keywords (searches title and description)
-    if 'keywords' in request.GET:
-        keywords = request.GET['keywords']
-        if keywords:
-            products = products.filter(
-                Q(description__icontains=keywords) | 
-                Q(title__icontains=keywords)
-            )
+def home(request):
+    projects = load_projects()
+    return render(request, 'pages/home.html', {'latest': projects[0] if projects else None})
 
-    # Filter by Category Dropdown
-    if 'category' in request.GET:
-        category = request.GET['category']
-        if category:
-            products = products.filter(category__slug=category)
 
-    # Filter by Max Price
-    if 'price' in request.GET:
-        price = request.GET['price']
-        if price:
-            products = products.filter(price__lte=price)
-
-    context = {
-        'products': products,
-        'values': request.GET 
-    }
-    return render(request, 'pages/search.html', context)
+def portfolio(request):
+    return render(request, 'pages/portfolio.html', {'projects': load_projects()})
 
 
 def about(request):
@@ -57,7 +34,7 @@ def general_contact(request):
         if honeypot != '':
             # A bot filled it out! Pretend it worked, but do NOT send the email.
             messages.success(request, 'Thank you! Your quote request has been sent.')
-            return redirect('store:home')
+            return redirect('home')
 
         # 2. Get the real data (if the honeypot was blank)
         name = request.POST['full_name']
@@ -90,6 +67,6 @@ def general_contact(request):
         email_msg.send(fail_silently=False)
 
         messages.success(request, 'Thank you! Your quote request has been sent.')
-        return redirect('store:home')
+        return redirect('home')
 
     return render(request, 'pages/general_contact.html')

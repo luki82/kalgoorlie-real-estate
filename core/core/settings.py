@@ -15,9 +15,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --- SECURITY CONFIGURATION ---
 SECRET_KEY = os.environ.get('SECRET_KEY', 'default-unsafe-key-for-dev')
 
-# Stripe Configuration
-STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 
 # SECURITY: False in production (Render), True locally.
@@ -55,15 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     
     # Third Party Apps
-    'storages',
     'django_cleanup.apps.CleanupConfig',
 
     # Custom Apps
     'accounts',
     'pages',
-    'payments', 
-    'store',
-    # 'contacts', 
 ]
 
 MIDDLEWARE = [
@@ -143,7 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # --- CUSTOM AUTH ---
 AUTH_USER_MODEL = 'accounts.User' 
-LOGIN_URL = 'login' 
+LOGIN_URL = 'admin:login'
 
 
 # --- CACHE ---
@@ -165,36 +158,15 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
-# --- AWS S3 SETTINGS (CONSOLIDATED) ---
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'ap-southeast-2')
+# --- FILE STORAGE ---
+# Static files (including the portfolio drawings) are served by WhiteNoise.
+MEDIA_URL = '/media/'
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
-# Logic: If AWS Keys exist, use S3. If not, use local files.
-if AWS_ACCESS_KEY_ID:
-    print("✅ AWS KEYS FOUND! Using S3 Storage.")
-    
-    # 1. Configuration
-    AWS_S3_SIGNATURE_VERSION = 's3v4'
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    AWS_QUERYSTRING_AUTH = False
-    AWS_S3_FILE_OVERWRITE = False
+# Put the PDFs for the Portfolio page in this folder (see portfolio_pdfs/README.txt)
+PORTFOLIO_PDF_DIR = BASE_DIR / 'portfolio_pdfs'
 
-    # 2. Domain & URL
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
-
-    # 3. Storage Engine (Django 4.2+ Standard)
-    STORAGES = {
-        "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
-        "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
-    }
-else:
-    print("⚠️ NO AWS KEYS FOUND. Falling back to Local Storage.")
-    MEDIA_URL = '/media/'
-    STORAGES = {
-        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-        "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
-    }
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
