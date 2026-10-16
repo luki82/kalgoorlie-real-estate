@@ -1,9 +1,9 @@
 [
   {
-    "slug": "01_kalgoorlie_family_home",
-    "title": "Kalgoorlie family home",
+    "slug": "auestate-portfolio-3x2-residential-dwelling-1",
+    "title": "AUestate Portfolio - 3x2 Residential Dwelling (1)",
     "description": "",
-    "signature": "413748-1781351323",
+    "signature": "3086133-1792128981",
     "pages": [
       {
         "files": [
@@ -17,36 +17,82 @@
           ],
           [
             "p01-full.webp",
-            4963
+            4964
           ]
         ],
-        "width": 4963,
+        "width": 4964,
         "height": 3509
-      }
-    ]
-  },
-  {
-    "slug": "02_kalgoorlie_family_home",
-    "title": "Kalgoorlie family home",
-    "description": "",
-    "signature": "2890083-1784608423",
-    "pages": [
+      },
       {
         "files": [
           [
-            "p01-1200.webp",
+            "p02-1200.webp",
             1200
           ],
           [
-            "p01-2400.webp",
+            "p02-2400.webp",
             2400
           ],
           [
-            "p01-full.webp",
-            4963
+            "p02-full.webp",
+            4964
           ]
         ],
-        "width": 4963,
+        "width": 4964,
+        "height": 3509
+      },
+      {
+        "files": [
+          [
+            "p03-1200.webp",
+            1200
+          ],
+          [
+            "p03-2400.webp",
+            2400
+          ],
+          [
+            "p03-full.webp",
+            4964
+          ]
+        ],
+        "width": 4964,
+        "height": 3509
+      },
+      {
+        "files": [
+          [
+            "p04-1200.webp",
+            1200
+          ],
+          [
+            "p04-2400.webp",
+            2400
+          ],
+          [
+            "p04-full.webp",
+            5000
+          ]
+        ],
+        "width": 5000,
+        "height": 3537
+      },
+      {
+        "files": [
+          [
+            "p05-1200.webp",
+            1200
+          ],
+          [
+            "p05-2400.webp",
+            2400
+          ],
+          [
+            "p05-full.webp",
+            4964
+          ]
+        ],
+        "width": 4964,
         "height": 3509
       }
     ]
