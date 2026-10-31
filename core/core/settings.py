@@ -191,8 +191,8 @@ CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', EMAIL_HOST_USER)
 
 # --- BUSINESS DETAILS SHOWN ON THE SITE ---
 # Leave either one empty and it is simply not shown.
-# BUSINESS_PHONE: e.g. "0400 000 000"
-BUSINESS_PHONE = os.environ.get('BUSINESS_PHONE', '').strip()
+# BUSINESS_PHONE: shown on the Contact page and footer. Set the env var to change it.
+BUSINESS_PHONE = os.environ.get('BUSINESS_PHONE', '0414 513 590').strip()
 # PUBLIC_LIABILITY_COVER: e.g. "$20 million". Only set this once the policy is paid
 # and you hold a current Certificate of Currency.
 PUBLIC_LIABILITY_COVER = os.environ.get('PUBLIC_LIABILITY_COVER', '').strip()
