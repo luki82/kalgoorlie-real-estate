@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
-{% load static %}
+
+{% block title %}About | auestate.com.au Cleaning – Kalgoorlie{% endblock %}
 
 {% block content %}
 <div class="bg-light py-5">
@@ -7,31 +8,32 @@
         <div class="text-center mb-5">
             <h1 class="fw-bold">About</h1>
             <p class="text-muted mx-auto" style="max-width: 640px;">
-                I'm a Kalgoorlie-based drafter with a civil engineering degree. I draw building plans for local homeowners,
-                builders and businesses, and get them through council approval.
+                auestate.com.au is a locally owned cleaning business based in Kalgoorlie, run by Luki Tombek.
+                I work on Goldfields mine sites every week, so I know what sites expect: safety first,
+                on time, and the job done properly.
             </p>
         </div>
 
         <div class="row g-4 justify-content-center">
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm p-4 text-center">
-                    <div class="text-danger mb-3"><i class="fas fa-university fa-3x"></i></div>
-                    <h2 class="h5 fw-bold text-dark">Civil engineering degree</h2>
-                    <p class="small text-muted mb-0">Bachelor of Civil Engineering from Edith Cowan University.</p>
+                    <div class="text-brand mb-3"><i class="fas fa-map-marker-alt fa-3x"></i></div>
+                    <h2 class="h5 fw-bold text-dark">Local to the Goldfields</h2>
+                    <p class="small text-muted mb-0">Based in Kalgoorlie, servicing Kalgoorlie-Boulder, Kambalda, Coolgardie and surrounding sites.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm p-4 text-center">
-                    <div class="text-danger mb-3"><i class="fas fa-drafting-compass fa-3x"></i></div>
-                    <h2 class="h5 fw-bold text-dark">AutoCAD drafting</h2>
-                    <p class="small text-muted mb-0">Experienced drafting residential and mid-size commercial buildings.</p>
+                    <div class="text-brand mb-3"><i class="fas fa-hard-hat fa-3x"></i></div>
+                    <h2 class="h5 fw-bold text-dark">Mine site ready</h2>
+                    <p class="small text-muted mb-0">Familiar with site inductions, PPE, access rules and working around rosters.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-sm p-4 text-center">
-                    <div class="text-danger mb-3"><i class="fas fa-map-marker-alt fa-3x"></i></div>
-                    <h2 class="h5 fw-bold text-dark">Local council experience</h2>
-                    <p class="small text-muted mb-0">I've taken my own building plans through the council approval process, including the planner's change requests.</p>
+                    <div class="text-brand mb-3"><i class="fas fa-handshake fa-3x"></i></div>
+                    <h2 class="h5 fw-bold text-dark">Owner-operated</h2>
+                    <p class="small text-muted mb-0">You deal directly with the person doing the work, from quote to clean.</p>
                 </div>
             </div>
         </div>
@@ -41,11 +43,11 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card border-danger border-2 shadow-sm">
+            <div class="card border-brand border-2 shadow-sm">
                 <div class="card-body p-5 text-center">
-                    <h2 class="h3 fw-bold mb-3">Need plans for council?</h2>
-                    <p class="text-muted mb-4">Taking on new projects in Kalgoorlie-Boulder and across the Goldfields.</p>
-                    <a href="{% url 'general_contact' %}?subject=Drafting quote" class="btn btn-danger btn-lg px-5 fw-bold">Get a free quote</a>
+                    <h2 class="h3 fw-bold mb-3">Need a reliable cleaner on site?</h2>
+                    <p class="text-muted mb-4">Taking on regular and one-off cleaning jobs across the Goldfields.</p>
+                    <a href="{% url 'general_contact' %}?subject=Cleaning quote" class="btn btn-brand btn-lg px-5 fw-bold">Get a free quote</a>
                 </div>
             </div>
         </div>

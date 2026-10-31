@@ -22,9 +22,5 @@ Thumbs.db
 # --- Editor Settings 
 .vscode/
 .idea/
-# --- Portfolio ---
-# Original PDFs stay on your computer; only the web images in static/portfolio/ are pushed
-/portfolio_pdfs/*.pdf
-
 # --- Built by collectstatic (Render builds this itself) ---
 /staticfiles/

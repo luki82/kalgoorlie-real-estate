@@ -6,18 +6,17 @@ from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 
 from .models import Inquiry
-from .portfolio import load_projects
 
 logger = logging.getLogger(__name__)
 
 
 def home(request):
-    projects = load_projects()
-    return render(request, 'pages/home.html', {'latest': projects[0] if projects else None})
+    return render(request, 'pages/home.html')
 
 
 def portfolio(request):
-    return render(request, 'pages/portfolio.html', {'projects': load_projects()})
+    # The drafting portfolio is retired; send old links to the cleaning services page.
+    return redirect('services', permanent=True)
 
 
 def about(request):
@@ -59,13 +58,13 @@ def general_contact(request):
 
         # 4. Email it. If email isn't working, the enquiry is still saved.
         email_body = (
-            "You have received a new quote request / enquiry from the drafting website.\n\n"
+            "You have received a new quote request / enquiry from the cleaning website.\n\n"
             f"Name: {name}\nEmail: {email}\nPhone: {phone}\nSubject: {subject}\n\n"
             f"Message:\n{message}\n"
         )
         try:
             EmailMessage(
-                subject=f'Drafting Inquiry: {subject or name}',
+                subject=f'Cleaning Inquiry: {subject or name}',
                 body=email_body,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[settings.CONTACT_EMAIL],

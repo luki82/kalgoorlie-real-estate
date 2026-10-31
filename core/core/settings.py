@@ -109,6 +109,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'pages.context_processors.business',
             ],
         },
     },
@@ -188,17 +189,22 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 # Where new enquiries are sent.
 CONTACT_EMAIL = os.environ.get('CONTACT_EMAIL', EMAIL_HOST_USER)
 
+# --- BUSINESS DETAILS SHOWN ON THE SITE ---
+# Leave either one empty and it is simply not shown.
+# BUSINESS_PHONE: shown on the Contact page and footer. Set the env var to change it.
+BUSINESS_PHONE = os.environ.get('BUSINESS_PHONE', '0414 513 590').strip()
+# PUBLIC_LIABILITY_COVER: e.g. "$20 million". Only set this once the policy is paid
+# and you hold a current Certificate of Currency.
+PUBLIC_LIABILITY_COVER = os.environ.get('PUBLIC_LIABILITY_COVER', '').strip()
+
 
 # --- FILE STORAGE ---
-# Static files (including the portfolio drawings) are served by WhiteNoise.
+# Static files are served by WhiteNoise.
 MEDIA_URL = '/media/'
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
-
-# Put the PDFs for the Portfolio page in this folder (see portfolio_pdfs/README.txt)
-PORTFOLIO_PDF_DIR = BASE_DIR / 'portfolio_pdfs'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 

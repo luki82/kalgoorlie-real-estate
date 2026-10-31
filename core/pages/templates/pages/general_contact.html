@@ -1,56 +1,92 @@
 {% extends 'layouts/base.html' %}
 
+{% block title %}Contact | auestate.com.au Cleaning – Kalgoorlie{% endblock %}
+
 {% block content %}
+<div class="bg-dark text-white py-5">
+  <div class="container text-center py-3">
+    <h1 class="fw-bold">Contact</h1>
+    <p class="lead text-white-50 mx-auto mb-0" style="max-width: 640px;">
+      Ask a question or request a free quote. I'll get back to you within one business day.
+    </p>
+  </div>
+</div>
+
 <section class="py-5 bg-light">
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow">
-          <div class="card-header bg-dark text-white">
-            <h4 class="mb-0">Get a drafting quote</h4>
+    <div class="row g-4">
+
+      <div class="col-lg-4 order-lg-2">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-4">Get in touch</h2>
+            <p class="mb-3 text-muted">
+              <i class="fas fa-envelope text-brand me-2"></i>Use the form and your message comes straight to me.
+            </p>
+            <p class="mb-3 text-muted">
+              <i class="fas fa-map-marker-alt text-brand me-2"></i>Kalgoorlie-Boulder, Kambalda, Coolgardie and Goldfields sites
+            </p>
+            {% if business_phone %}
+            <p class="mb-3">
+              <i class="fas fa-phone text-brand me-2"></i>
+              <a href="tel:{{ business_phone_link }}" class="text-dark fw-bold text-decoration-none">{{ business_phone }}</a>
+            </p>
+            {% endif %}
+            {% if liability_cover %}
+            <p class="mb-0 text-muted">
+              <i class="fas fa-shield-alt text-brand me-2"></i>{{ liability_cover }} public liability insured. Certificate of Currency on request.
+            </p>
+            {% endif %}
           </div>
-          <div class="card-body">
-            
+        </div>
+      </div>
+
+      <div class="col-lg-8 order-lg-1">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-4">Send a message</h2>
+
             <form action="{% url 'general_contact' %}" method="POST">
               {% csrf_token %}
-              
+
               <div style="display: none;">
                   <label for="website_url">Leave this field blank if you are human:</label>
                   <input type="text" name="website_url" id="website_url" autocomplete="off">
               </div>
-              
-              <div class="form-group mb-3">
-                <label>Full Name</label>
-                <input type="text" name="full_name" class="form-control" required>
+
+              <div class="mb-3">
+                <label for="full_name" class="form-label">Full name</label>
+                <input type="text" name="full_name" id="full_name" class="form-control" required>
               </div>
 
               <div class="row mb-3">
-                <div class="col-md-6">
-                  <label>Email</label>
-                  <input type="email" name="email" class="form-control" required>
+                <div class="col-md-6 mb-3 mb-md-0">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" name="email" id="email" class="form-control" required>
                 </div>
                 <div class="col-md-6">
-                  <label>Phone</label>
-                  <input type="tel" name="phone" class="form-control">
+                  <label for="phone" class="form-label">Phone</label>
+                  <input type="tel" name="phone" id="phone" class="form-control">
                 </div>
               </div>
 
-              <div class="form-group mb-3">
-                <label>Subject</label>
-                <input type="text" name="subject" class="form-control" value="{{ request.GET.subject|default:'Drafting quote' }}" required>
+              <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" name="subject" id="subject" class="form-control" value="{{ request.GET.subject|default:'General enquiry' }}" required>
               </div>
 
-              <div class="form-group mb-3">
-                <label>Message</label>
-                <textarea name="message" class="form-control" rows="5" required placeholder="Property address, what you want to build (e.g. new house, extension, shed), and any sketches or ideas you already have."></textarea>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea name="message" id="message" class="form-control" rows="5" required placeholder="For a quote: where the job is (town or site), what needs cleaning (e.g. offices, crib rooms, ablutions, camp rooms), how often, and any site requirements."></textarea>
               </div>
 
-              <button type="submit" class="btn btn-danger fw-bold w-100">Send quote request</button>
+              <button type="submit" class="btn btn-brand fw-bold w-100">Send message</button>
             </form>
 
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
