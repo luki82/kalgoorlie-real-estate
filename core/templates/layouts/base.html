@@ -34,6 +34,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'general_contact' %}">Contact</a></li>
                     <li class="nav-item"><a class="btn btn-brand btn-sm fw-bold ms-lg-2 mt-2 mt-lg-0 px-3 py-2" href="{% url 'general_contact' %}?subject=Cleaning quote">Get a Quote</a></li>
                 </ul>
             </div>
@@ -56,7 +57,8 @@
 
     <footer class="bg-dark text-white-50 py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-1">&copy; 2026 auestate.com.au | Kalgoorlie, WA</p>
+            <p class="mb-1">&copy; 2026 auestate.com.au | Kalgoorlie, WA{% if business_phone %} | <a href="tel:{{ business_phone_link }}" class="text-white-50">{{ business_phone }}</a>{% endif %}</p>
+            {% if liability_cover %}<p class="small mb-1"><i class="fas fa-shield-alt me-1"></i>{{ liability_cover }} public liability insured</p>{% endif %}
             <small>Commercial, industrial &amp; mine site cleaning – Goldfields, WA · <a href="{% url 'terms' %}" class="text-white-50">Terms</a></small>
         </div>
     </footer>

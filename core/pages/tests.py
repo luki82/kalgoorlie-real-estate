@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Inquiry
@@ -24,3 +24,20 @@ class CleaningSiteTests(TestCase):
         })
         self.assertRedirects(response, reverse('home'))
         self.assertEqual(Inquiry.objects.count(), 1)
+
+
+class BusinessDetailsTests(TestCase):
+    def test_contact_link_in_menu(self):
+        self.assertContains(self.client.get(reverse('home')), 'href="/contact/">Contact</a>')
+
+    @override_settings(PUBLIC_LIABILITY_COVER='', BUSINESS_PHONE='')
+    def test_insurance_and_phone_hidden_when_not_set(self):
+        response = self.client.get(reverse('general_contact'))
+        self.assertNotContains(response, 'public liability')
+        self.assertNotContains(response, 'tel:')
+
+    @override_settings(PUBLIC_LIABILITY_COVER='$20 million', BUSINESS_PHONE='0400 123 456')
+    def test_insurance_and_phone_shown_when_set(self):
+        response = self.client.get(reverse('general_contact'))
+        self.assertContains(response, '$20 million public liability insured')
+        self.assertContains(response, 'href="tel:0400123456"')

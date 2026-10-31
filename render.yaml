@@ -38,6 +38,12 @@ services:
         sync: false
       - key: CONTACT_EMAIL
         sync: false
+      # Shown on the site. Leave empty to hide.
+      - key: BUSINESS_PHONE
+        sync: false
+      # e.g. "$20 million". Set only once the insurance policy is paid.
+      - key: PUBLIC_LIABILITY_COVER
+        sync: false
       # First admin login, created on the first deploy.
       - key: DJANGO_SUPERUSER_EMAIL
         sync: false
