@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
 
+{% block title %}Get a Quote | auestate.com.au Cleaning{% endblock %}
+
 {% block content %}
 <section class="py-5 bg-light">
   <div class="container">
@@ -7,7 +9,7 @@
       <div class="col-md-8">
         <div class="card shadow">
           <div class="card-header bg-dark text-white">
-            <h4 class="mb-0">Get a drafting quote</h4>
+            <h4 class="mb-0">Get a cleaning quote</h4>
           </div>
           <div class="card-body">
             
@@ -37,15 +39,15 @@
 
               <div class="form-group mb-3">
                 <label>Subject</label>
-                <input type="text" name="subject" class="form-control" value="{{ request.GET.subject|default:'Drafting quote' }}" required>
+                <input type="text" name="subject" class="form-control" value="{{ request.GET.subject|default:'Cleaning quote' }}" required>
               </div>
 
               <div class="form-group mb-3">
                 <label>Message</label>
-                <textarea name="message" class="form-control" rows="5" required placeholder="Property address, what you want to build (e.g. new house, extension, shed), and any sketches or ideas you already have."></textarea>
+                <textarea name="message" class="form-control" rows="5" required placeholder="Where the job is (town or site), what needs cleaning (e.g. offices, crib rooms, ablutions, camp rooms), how often, and any site requirements."></textarea>
               </div>
 
-              <button type="submit" class="btn btn-danger fw-bold w-100">Send quote request</button>
+              <button type="submit" class="btn btn-brand fw-bold w-100">Send quote request</button>
             </form>
 
           </div>

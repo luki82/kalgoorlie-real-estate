@@ -1,3 +1,26 @@
 from django.test import TestCase
+from django.urls import reverse
 
-# Create your tests here.
+from .models import Inquiry
+
+
+class CleaningSiteTests(TestCase):
+    def test_pages_load_with_cleaning_content(self):
+        for name in ['home', 'services', 'about', 'general_contact', 'terms']:
+            response = self.client.get(reverse(name))
+            self.assertEqual(response.status_code, 200, name)
+            self.assertNotContains(response, 'drafting', status_code=200)
+            self.assertNotContains(response, 'Drafting', status_code=200)
+        self.assertContains(self.client.get(reverse('home')), 'mine site cleaning')
+
+    def test_old_portfolio_link_redirects_to_services(self):
+        response = self.client.get('/portfolio/')
+        self.assertRedirects(response, reverse('services'), status_code=301)
+
+    def test_quote_form_saves_enquiry(self):
+        response = self.client.post(reverse('general_contact'), {
+            'full_name': 'Test Site', 'email': 'site@example.com', 'phone': '',
+            'subject': 'Cleaning quote', 'message': 'Crib room and ablutions, weekly.',
+        })
+        self.assertRedirects(response, reverse('home'))
+        self.assertEqual(Inquiry.objects.count(), 1)
