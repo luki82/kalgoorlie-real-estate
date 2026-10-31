@@ -199,15 +199,12 @@ PUBLIC_LIABILITY_COVER = os.environ.get('PUBLIC_LIABILITY_COVER', '').strip()
 
 
 # --- FILE STORAGE ---
-# Static files (including the portfolio drawings) are served by WhiteNoise.
+# Static files are served by WhiteNoise.
 MEDIA_URL = '/media/'
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
-
-# Put the PDFs for the Portfolio page in this folder (see portfolio_pdfs/README.txt)
-PORTFOLIO_PDF_DIR = BASE_DIR / 'portfolio_pdfs'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 

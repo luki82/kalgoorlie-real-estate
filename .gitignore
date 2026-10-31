@@ -1,0 +1,7 @@
+# Local-only folders that must never go to GitHub
+/django_env/
+/venv/
+/env/
+.env
+__pycache__/
+*.pyc

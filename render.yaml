@@ -1,4 +1,4 @@
-# Render Blueprint for the drafting website.
+# Render Blueprint for the auestate.com.au cleaning website.
 # In Render: New + > Blueprint > pick this repository.
 databases:
   - name: drafting-db
