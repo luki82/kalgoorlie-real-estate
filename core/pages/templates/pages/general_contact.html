@@ -20,18 +20,18 @@
         <div class="card border-0 shadow-sm h-100">
           <div class="card-body p-4">
             <h2 class="h5 fw-bold mb-4">Get in touch</h2>
-            {% if business_phone %}
-            <p class="mb-3">
-              <i class="fas fa-phone text-brand me-2"></i>
-              <a href="tel:{{ business_phone_link }}" class="text-dark fw-bold text-decoration-none">{{ business_phone }}</a>
-            </p>
-            {% endif %}
             <p class="mb-3 text-muted">
               <i class="fas fa-envelope text-brand me-2"></i>Use the form and your message comes straight to me.
             </p>
             <p class="mb-3 text-muted">
               <i class="fas fa-map-marker-alt text-brand me-2"></i>Kalgoorlie-Boulder, Kambalda, Coolgardie and Goldfields sites
             </p>
+            {% if business_phone %}
+            <p class="mb-3">
+              <i class="fas fa-phone text-brand me-2"></i>
+              <a href="tel:{{ business_phone_link }}" class="text-dark fw-bold text-decoration-none">{{ business_phone }}</a>
+            </p>
+            {% endif %}
             {% if liability_cover %}
             <p class="mb-0 text-muted">
               <i class="fas fa-shield-alt text-brand me-2"></i>{{ liability_cover }} public liability insured. Certificate of Currency on request.
